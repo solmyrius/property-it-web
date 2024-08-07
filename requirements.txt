@@ -1,0 +1,13 @@
+psycopg~=3.1.9
+python-dotenv~=1.0.0
+shapely~=2.0.2
+numpy==1.24.2
+requests~=2.31.0
+python-dateutil==2.8.2
+schedule==1.2.0
+pyproj~=3.6.0
+geojson~=3.1.0
+django==4.2.11
+django-allauth[socialaccount]
+djangorestframework==3.15.1
+django-cors-headers==3.14.0

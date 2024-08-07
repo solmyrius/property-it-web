@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  property-web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: property-web
+    container_name: property-web
+    restart: always
+    ports:
+      - "5030:5000"
+    volumes:
+      - ./:/home/property-web
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "1m"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - property-widget
+
+networks:
+  property-widget:
+    external: true

@@ -1,0 +1,53 @@
+# Setup
+
+## Network
+
+`docker network create property-widget`
+
+## OSM
+
+`wget https://download.geofabrik.de/europe/italy-latest.osm.pbf`
+`osm2pgsql --create --slim --cache 20000 --hstore --username postgres --password --database osm --host localhost --port 21764 italy-latest.osm.pbf`
+
+### OSM log
+
+2024-08-03 14:26:45  Setting up table 'planet_osm_line'
+2024-08-03 14:26:45  Setting up table 'planet_osm_polygon'
+2024-08-03 14:26:45  Setting up table 'planet_osm_roads'
+2024-08-03 15:36:49  Reading input files done in 4204s (1h 10m 4s).           s)
+2024-08-03 15:36:49    Processed 245878320 nodes in 1285s (21m 25s) - 191k/s
+2024-08-03 15:36:49    Processed 27156689 ways in 806s (13m 26s) - 34k/s
+2024-08-03 15:36:49    Processed 519900 relations in 2113s (35m 13s) - 246/s
+2024-08-03 15:36:49  Clustering table 'planet_osm_line' by geometry...
+2024-08-03 15:36:49  Clustering table 'planet_osm_roads' by geometry...
+2024-08-03 15:36:49  Clustering table 'planet_osm_polygon' by geometry...
+2024-08-03 15:36:49  Clustering table 'planet_osm_point' by geometry...
+2024-08-03 15:39:57  Creating geometry index on table 'planet_osm_roads'...
+2024-08-03 15:40:07  Creating osm_id index on table 'planet_osm_roads'...
+2024-08-03 15:40:12  Analyzing table 'planet_osm_roads'...
+2024-08-03 15:40:16  All postprocessing on table 'planet_osm_roads' done in 207s (3m 27s).
+2024-08-03 15:40:18  Building index on table 'planet_osm_ways'
+2024-08-03 16:43:32  Creating geometry index on table 'planet_osm_point'...
+2024-08-03 16:50:14  Creating osm_id index on table 'planet_osm_point'...
+2024-08-03 16:52:47  Analyzing table 'planet_osm_point'...
+2024-08-03 16:52:52  All postprocessing on table 'planet_osm_point' done in 4563s (1h 16m 3s).
+2024-08-03 16:52:53  Building index on table 'planet_osm_rels'
+2024-08-03 16:57:34  Done postprocessing on table 'planet_osm_rels' in 282s (4m 42s)
+2024-08-03 18:04:08  Creating geometry index on table 'planet_osm_line'...
+2024-08-03 18:19:58  Creating osm_id index on table 'planet_osm_line'...
+2024-08-03 18:22:06  Analyzing table 'planet_osm_line'...
+2024-08-03 18:22:09  All postprocessing on table 'planet_osm_line' done in 9920s (2h 45m 20s).
+2024-08-03 18:45:05  Creating geometry index on table 'planet_osm_polygon'...
+2024-08-03 19:05:47  Creating osm_id index on table 'planet_osm_polygon'...
+2024-08-03 19:07:52  Analyzing table 'planet_osm_polygon'...
+2024-08-03 19:07:54  All postprocessing on table 'planet_osm_polygon' done in 12665s (3h 31m 5s).
+2024-08-03 22:47:47  Done postprocessing on table 'planet_osm_ways' in 25651s (7h 7m 31s)
+2024-08-03 22:47:47  node cache: stored: 245878320(100.00%), storage efficiency: 52.85% (dense blocks: 7989, sparse nodes: 199885456), hit rate: 100.00%
+2024-08-03 22:47:47  osm2pgsql took 30063s (8h 21m 3s) overall.
+
+
+### Django Setup
+
+`django-admin startproject italy_web`
+
+`python manage.py startapp italy_app`
