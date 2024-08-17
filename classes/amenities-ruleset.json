@@ -1,0 +1,142 @@
+{
+  "supermarket": {
+    "rules": [
+      {
+        "key": "shop",
+        "values": [
+          "supermarket"
+        ]
+      }
+    ],
+    "label": "Supermarket",
+    "label_en": "Supermarket"
+  },
+  "store": {
+    "rules": [
+      {
+        "key": "shop",
+        "values": [
+          "convenience",
+          "general",
+          "grocery",
+          "newsagent",
+          "greengrocer",
+          "kiosk",
+          "organic",
+          "snack",
+          "variety store",
+          "alcohol"
+        ]
+      }
+    ],
+    "label": "Store"
+  },
+  "restaurant": {
+    "rules": [
+      {
+        "key": "amenity",
+        "values": [
+          "restaurant",
+          "fast_food",
+          "bistro",
+          "food_court"
+        ]
+      }
+    ],
+    "label": "Restaurant"
+  },
+  "cafe": {
+    "rules": [
+      {
+        "key": "amenity",
+        "values": [
+          "cafe"
+        ]
+      }
+    ],
+    "label": "Cafe"
+  },
+  "doctor": {
+    "rules": [
+      {
+        "key": "amenity",
+        "values": [
+          "doctors",
+          "clinic",
+          "hospital"
+        ]
+      }
+    ],
+    "label": "Medical"
+  },
+  "pub": {
+    "rules": [
+      {
+        "key": "amenity",
+        "values": [
+          "pub",
+          "bar",
+          "biergarten",
+          "nightclub"
+        ]
+      }
+    ],
+    "label": "Pub"
+  },
+  "park": {
+    "rules": [
+      {
+        "key": "leisure",
+        "values": [
+          "park",
+          "nature_reserve",
+          "pitch",
+          "dog_park",
+          "bird_hide"
+        ]
+      },
+      {
+        "key": "landuse",
+        "values": [
+          "recreation_ground"
+        ]
+      }
+    ],
+    "label": "Park"
+  },
+  "pharmacy": {
+    "rules": [
+      {
+        "key": "amenity",
+        "values": [
+          "pharmacy"
+        ]
+      }
+    ],
+    "label": "Park"
+  },
+  "sport": {
+    "rules": [
+      {
+        "key": "leisure",
+        "values": [
+          "fitness_centre",
+          "fitness_station",
+          "sports_centre"
+        ]
+      },
+      {
+        "key": "sport",
+        "values": [
+          "fitness",
+          "tennis",
+          "athletics",
+          "boxing",
+          "gymnastics",
+          "yoga"
+        ]
+      }
+    ],
+    "label": "Sport/Gym"
+  }
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/map.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+          href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+          type="text/css">
+</head>
+<body class="layout-heads demographicss">
+<div id="pi-content">
+    <header id="pi-header">
+        <div class="header">
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="/" class="logo-link">
+                        <img src="/static/images/logo4.svg" alt="Logo" class="logo">
+                        <span class="header-text">IT Prop</span>
+                    </a>
+                </div>
+                <div id="geocoder"></div>
+                <!--<input type="text" id="addressInput1" placeholder="Type in address or EirCode" autocomplete="on" class="search-bar">-->
+                <div class="header-right"></div>
+
+                <a href="/about" class="header-link about-link">About</a>
+                {% if request.user.is_authenticated %}
+                <a href="/accounts/logout" class="header-link login-link">Logout</a>
+                {% else %}
+                <a href="/accounts/login" class="header-link login-link">Login/sign up</a>
+                {% endif %}
+                <!-- Hamburger Menu Icon added right after the header-right -->
+                <div class="hamburger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- Hamburger navigation menu -->
+            <nav class="hamnav" style="display: none;">
+                <button class="nav-close" aria-label="Close menu"
+                        style="background: none; border: none; cursor: pointer;">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <div class="nav-header">
+                    <img src="/static/images/logo4.svg" alt="Logo" class="nav-logo">
+                    <span class="nav-header-text">Savv.ie</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/review">Review an area</a></li>
+                    <li><a href="/compare.html">Compare areas and properties</a></li>
+
+                    {% if request.user.is_authenticated %}
+                    <li><a href="/accounts/logout">Logout</a></li>
+                    {% else %}
+                    <li><a href="/accounts/login">Login/sign up</a></li>
+                    {% endif %}
+                </ul>
+                <div class="nav-footer">
+                    <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms & Conditions</a>
+                </div>
+            </nav>
+        </div>
+        <div class="nav carousel-container">
+            <div class="arrow-left hidden">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div id="owl-demo" class="carousel navigation slider1">
+                {% for item in top_menu %}
+                <a href="{{item.href}}"
+                   class="{% if item.section == active_menu %}demographics-link{% endif %}">{{item.anchor}}</a>
+                {% endfor %}
+            </div>
+            <div class="arrow-right">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </header>
+    {% include sub_template %}
+</div>
+<script>
+    function scrollToSection(elementId) {
+        var section = document.getElementById(elementId);
+        if (section) {
+            section.scrollIntoView({behavior: 'smooth'});
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var scrollPane = document.querySelector('.scroll-pane');
+        var mapSection = document.querySelector('.mapsection');
+        var map = document.querySelector('#map');
+
+        if (window.innerWidth <= 992) { // Mobile devices
+            if (scrollPane && scrollPane.classList.contains('demography-page')) {
+                scrollPane.style.marginTop = '50vh';
+                mapSection.style.height = '51vh';
+                if (map) {
+                    map.style.height = '51vh';
+                }
+            }
+        }
+
+        // Optional: Listen for window resize events to adjust dynamically if the screen size changes
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 992) { // Mobile devices
+                if (scrollPane && scrollPane.classList.contains('demography-page')) {
+                    scrollPane.style.marginTop = '50vh';
+                    mapSection.style.height = '51vh';
+                    if (map) {
+                        map.style.height = '51vh';
+                    }
+                }
+            } else {
+                // Reset styles or apply other logic for non-mobile devices if necessary
+                if (scrollPane && scrollPane.classList.contains('demography-page')) {
+                    scrollPane.style.marginTop = '';
+                    mapSection.style.height = '';
+                    if (map) {
+                        map.style.height = '';
+                    }
+                }
+            }
+        });
+    });
+
+
+    // Ensure scroll-pane is set to top: 0px for demography page
+    document.addEventListener('DOMContentLoaded', function () {
+        var scrollPane = document.querySelector('.scroll-pane');
+        var scrollPaneItem = document.querySelector('#schools-item');
+
+        // Adjust the general scroll-pane positioning
+        if (scrollPane && scrollPane.classList.contains('demography-page')) {
+            scrollPane.style.top = '0px';
+        } else if (scrollPane) {
+            scrollPane.style.top = '-70px'; // Default value for other pages
+        }
+
+        // Adjust the schools-item scroll-pane positioning specifically
+        if (scrollPaneItem) {
+            scrollPaneItem.style.top = '-70px'; // Default value for schools-item
+        }
+    });
+
+    // Dynamic adjustment for map section for mobile devices
+    document.addEventListener('DOMContentLoaded', function () {
+        var mapSection = document.querySelector('.mapsection');
+        if (window.innerWidth <= 992) { // Mobile devices
+            if (document.querySelector('.scroll-pane.demography-page')) {
+                mapSection.style.top = '170px';
+            } else {
+                mapSection.style.top = '120px';
+            }
+        } else {
+            // Default or other logic for non-mobile devices if necessary
+            mapSection.style.top = '120px';
+        }
+    });
+
+    // Optional: Listen for window resize events to adjust dynamically if the screen size changes
+    window.addEventListener('resize', function () {
+        var mapSection = document.querySelector('.mapsection');
+        if (window.innerWidth <= 992) { // Mobile devices
+            if (document.querySelector('.scroll-pane.demography-page')) {
+                mapSection.style.top = '170px';
+            } else {
+                mapSection.style.top = '120px';
+            }
+        } else {
+            // Default or other logic for non-mobile devices if necessary
+            mapSection.style.top = '120px';
+        }
+    });
+</script>
+
+{% block mapscript %}
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navContainer = document.querySelector('.carousel.navigation');
+        const arrowLeft = document.querySelector('.arrow-left');
+        const arrowRight = document.querySelector('.arrow-right');
+        const scrollAmount = 250;
+
+        function updateArrows() {
+            if (navContainer.scrollLeft > 0) {
+                arrowLeft.classList.remove('hidden');
+            } else {
+                arrowLeft.classList.add('hidden');
+            }
+
+            if (navContainer.scrollLeft + navContainer.clientWidth < navContainer.scrollWidth) {
+                arrowRight.classList.remove('hidden');
+            } else {
+                arrowRight.classList.add('hidden');
+            }
+        }
+
+        arrowLeft.addEventListener('click', function () {
+            const newScrollLeft = Math.max(0, navContainer.scrollLeft - scrollAmount);
+            navContainer.scrollTo({left: newScrollLeft, behavior: 'smooth'});
+        });
+
+        arrowRight.addEventListener('click', function () {
+            const newScrollLeft = Math.min(navContainer.scrollWidth - navContainer.clientWidth, navContainer.scrollLeft + scrollAmount);
+            navContainer.scrollTo({left: newScrollLeft, behavior: 'smooth'});
+        });
+
+        navContainer.addEventListener('scroll', updateArrows);
+        window.addEventListener('resize', updateArrows);
+
+        // Center the selected link on page load
+        const selectedLink = document.querySelector('.demographics-link');
+        if (selectedLink) {
+            const linkPosition = selectedLink.offsetLeft;
+            const linkWidth = selectedLink.offsetWidth;
+            const containerWidth = navContainer.clientWidth;
+            navContainer.scrollLeft = linkPosition - (containerWidth / 2) + (linkWidth / 2);
+        }
+
+        updateArrows();
+    });
+</script>
+</body>
+</html>

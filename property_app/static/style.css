@@ -1,0 +1,2479 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+#pi-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+#pi-header {
+    padding: 0;
+    width: 100%;
+    position: fixed;
+    height: 140px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* ensures the header stays above other content */
+}
+#pi-map-main{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin-top: 140px;
+}
+#pi-map-datapane{
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    height: calc(100vh - 140px);
+    box-sizing: border-box;
+}
+#pi-map-map{
+    flex: 1;
+    background-color: #ccc;
+    padding: 0;
+    height: calc(100vh - 140px);
+    box-sizing: border-box;
+}
+.subnav-link-active {
+    border-bottom: 2px solid #007bff;
+    border-radius: unset !important;
+    text-decoration: unset !important;
+    height: auto !important;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.subnav-link-active {
+    font-weight: bold;
+    color: #007bff !important;
+}
+button.map-dsks {
+    display: none;
+}
+#map-divs{
+    scroll-behavior: smooth;
+}
+.map-dsks{
+    scroll-behavior: smooth;
+}
+.header-container {
+    max-width: 1425px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    height: 70px;
+}
+
+.header-left, .header-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.header-left, .header-right {
+    flex-basis: auto; /* Adjust as needed, or use explicit values */
+}
+
+
+
+.logo {
+    height: auto; /* Adjust this based on your logo's size */
+    width: 60px; /* Adjust this based on your logo's size */
+    margin-right: 10px;
+    margin-left: 15%;
+}
+
+
+.header-text {
+    font-weight: bold;
+    color: #02183d;
+    font-size: 2em;
+}
+
+@media (max-width: 730px) {
+
+    .header-text {
+        display: none;
+    }
+}
+
+.logo-link {
+    display: flex;
+    align-items: center; /* Keeps the logo and text vertically aligned */
+    justify-content: flex-start; /* Adjusts the horizontal positioning, if necessary */
+    text-decoration: none !important; /* Removes underline from the link */
+    color: inherit; /* Ensures the text color is inherited and not affected by the link */
+}
+
+
+.hamburger-menu {
+    display: none;
+}
+
+.hamburger-menu span {
+    display: none;
+}
+
+.hamnav {
+    display: none;
+}
+
+@media (min-width: 992px) {
+
+    .hamburger-menu {
+        display: none;
+    }
+
+    .hamburger-menu span {
+        display: none;
+    }
+
+    .hamnav {
+        display: none;
+    }
+
+    .nav-header {
+        display: none;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-close {
+        display: none;
+    }
+    .nav-footer {
+        display: none;
+    }
+}
+
+
+.widgets-link {
+    color: #02183d;
+    text-decoration: none !important;
+}
+
+.review-link {
+    color: #02183d;
+    text-decoration: none !important;
+    margin-left: 2%;
+}
+
+.review-edit{
+    background: #007bff;
+    padding: 7px;
+    border-radius: 10px;
+    display: inline-block;
+}
+.review-edit a{
+    color: #fff;
+}
+
+.about-link {
+    color: #02183d;
+    text-decoration: none !important;
+    margin-left: 2%;
+}
+
+.login-link {
+    font-size: 1em;
+    color:  rgba(37, 126, 236, 0.8);
+    text-decoration: none !important;
+    margin-left: 2%; /* Adjust spacing between links */
+    margin-right: 2%
+}
+.nav {
+    position: fixed;
+    top: 70px; /* Height of the header */
+    left: 0;
+    width: 100%;
+    background-color: #ffffff; /* White background */
+    color: black; /* Example text color */
+    z-index: 999; /* Slightly less than the header to keep it below */
+    text-align: center;
+    height: 70px; /* Navigation bar height */
+    line-height: 70px; /* Center the text vertically */
+    box-sizing: border-box; /* This makes sure padding is included within the 70px height */
+    display: flex;
+    justify-content: center; /* Adjust as needed */
+    flex-wrap: wrap; /* Allows items to wrap if not enough horizontal space */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border-top: 1px solid #eaeaea; /* Light grey top border */
+    border-bottom: 1px solid #eaeaea; /* Light grey bottom border */
+    border-left: 1px solid #eaeaea; /* Light grey left border */
+    border-right: 1px solid #eaeaea; /* Light grey right border */
+}
+
+.navigation a {
+    max-width: 1425px;
+    text-decoration: none !important;
+    font-size: 1em; /* Using em makes it scalable */
+    color: #000000;
+    margin: 0 16px; /* Spacing between navigation items */
+    font-weight: bold; /* Set the font-weight to bold */
+    text-align: center;
+    padding: 5px 10px; /* Adjust padding as needed */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect */
+.navigation a:hover {
+    background-color: rgba(37, 126, 236, 0.8); /* Blue background on hover */
+    color: #ffffff; /* White text on hover */
+    border-radius: 20px; /* Rounded corners on hover */
+}
+
+
+.demographics-link {
+    background: rgba(37, 126, 236, 0.8);
+    color: #ffffff !important; /* Text color */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 10px; /* Adjust padding as needed */
+    text-decoration: none !important; /* Remove underline */
+}
+
+
+.subnav {
+    position: fixed;
+    top: 140px; /* Adjust this based on the combined height of your header and nav */
+    left: calc((100% - 1425px) / 2); /* Adjust '1425px' to match the .container width and '20px' to match the .scroll-pane padding */
+    width: 682px;
+    height: 60px;
+    background-color: #ffffff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Ensure it stays above other content */
+    border: 0.5px solid rgb(219, 217, 217); /* Adds a thin white border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+.subnav a {
+    text-decoration: none !important;
+    font-size: 1em; /* Using em makes it scalable */
+    color: #000000;
+    margin: 20px 20px; /* Adjusted spacing for subnavigation items */
+    text-align: center;
+    display: flex; /* Use flex to center text vertically */
+    align-items: center; /* Center text vertically within the link */
+    height: 100%; /* Make link fill the height of the subnavigation */
+}
+
+/* Hover effect */
+.subnav a:hover {
+    background-color:#ffffff; /* Light blue background on hover */
+    color: #000000; /* Dark text on hover */
+    border-radius: 20px; /* Rounded corners on hover */
+    width: auto;
+    height: 25px;
+    transform: scale(1.1); /* Slightly enlarges the link on hover */
+}
+
+/* Hide scrollbar for WebKit browsers */
+.subnav::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for other browsers */
+.subnav {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.subnav .arrow-left.hidden, .subnav .arrow-right.hidden {
+    display: none;
+}
+
+.ethnic-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.religion-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.age-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.employment-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.household-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.deprivation-profile-link {
+    font-weight: bold; /* Make the text bold */
+    color:#007bff !important;
+}
+
+.container {
+    display: flex;
+    min-height: 120vh;
+    max-width: 1425px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 210px; /* Adjusted to account for both header and nav bar heights */
+    box-sizing: border-box;
+}
+
+
+
+.containeroverview {
+    display: flex;
+    min-height: 180vh;
+    max-width: 1425px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 140px; /* Adjusted to account for both header and nav bar heights */
+    box-sizing: border-box;
+}
+
+
+.scroll-pane {
+    flex: 1.9;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    position: relative; /* Needed to position the subnav absolutely within it */
+    padding-top: 10px; /* Increase top padding to make space for the subnav */
+    top: -70px;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.scroll-pane::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.scroll-pane {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollable-content {
+    text-align: left;
+    margin: 20px 0px; /* Space above and below the heading and buttons */
+}
+
+.scrollable-content h2 {
+    display: block;
+    margin-bottom: 20px; /* Space between the heading and the location buttons */
+    font-size: 1.3em; /* Adjust the font size as needed */
+    color: #333; /* Adjust the color as needed */
+}
+
+.scrollable-content .blue-text {
+    color: #257eec;
+}
+
+.scrollable-content h3 {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1.1em; /* Adjust the font size as needed */
+    color: #070707; /* Adjust the color as needed */
+    font-style: italic;
+}
+
+.scrollable-content h4 {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 0.8em; /* Adjust the font size as needed */
+    color: #070707; /* Adjust the color as needed */
+    font-style: italic;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.scroll-pane h5 {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.9em; /* Adjust the font size as needed */
+    color: #5f0965; /* Adjust the color as needed */
+    font-weight: bold;
+}
+
+.division-name {
+    margin-left: 3%;
+}
+
+/* Location Buttons Container */
+.location-buttons {
+    display: flex;
+    justify-content: space-between; /* Evenly space the buttons */
+    margin-top: 30px;
+    margin-bottom: 75px; /* Space between the buttons and the table */
+}
+
+/* Individual Location Button */
+.location-button {
+    background-color: #ffffff; /* Very light grey background */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Center the text inside the buttons */
+    font-weight: bold; /* Bold font for the button text */
+    cursor: pointer; /* Change the cursor to indicate it's clickable */
+    min-width: 170px; /* Minimum width for all buttons */
+    height: 40px; /* Fixed height for all buttons */
+    margin: 0 25px; /* Reduced space between buttons */
+    text-overflow: ellipsis; /* Prevent text from overflowing */
+    overflow: visible; /* Hide overflow */
+    white-space: nowrap; /* Prevent text wrapping */
+    position: relative; /* This makes it possible to position the pseudo-element relative to the button */
+}
+
+.location-button-selected {
+    position: relative; /* This makes it possible to position the pseudo-element relative to the button */
+    background: rgba(2, 24, 61, 0.8);
+    color: #ffffff; /* White text for selected state */
+}
+
+.location-button-selected::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent; /* Increased size */
+    border-right: 30px solid transparent; /* Increased size */
+    border-top: 20px solid rgba(2, 24, 61, 0.8);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -30px; /* Adjusted to center the larger triangle */
+    display: block;
+}
+
+.location-buttons.two-buttons .location-button {
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 55%;
+    background-color: white;
+    color: rgb(8, 8, 8);
+    text-align: center;
+    border-radius: 6px;
+    padding: 3px 3px;
+    position: absolute;
+    z-index: 1;
+    bottom: 85%;
+    left: 35%;
+    font-size: 0.8em;
+    border: 1px solid lightgrey;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+}
+
+
+/* Table Container */
+.table-container {
+    border-collapse: separate; /* Change to 'separate' for internal cell borders */
+    width: 100%; /* Adjust table width as needed */
+    text-align: Left; /* Align text to the center for uniformity */
+    font-size: 1em;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 15px;
+}
+
+/* Table Styling */
+.table-container table {
+    border-collapse: separate; /* Change to 'separate' for internal cell borders */
+    width: 95%; /* Adjust table width as needed */
+    text-align: left; /* Align text to the center for uniformity */
+    font-size: 1em;
+}
+
+.table-container .total-row td {
+    font-weight: bold;
+}
+
+/* Header Row Style */
+.table-container th {
+    background-color: white; /* White background for header */
+    color: #007bff; /* Blue color for header text */
+    font-weight: bold; /* Bold font for header text */
+    border: none; /* No border for header cells */
+}
+
+/* Table Cell Styling */
+.table-container td {
+    border-bottom: 1px solid #f5f5f5; /* Light grey bottom border for cells */
+    padding: 8px; /* Padding inside cells */
+    background-color: #ffffff; /* Very light grey for cell background */
+    color: black; /* Black font color for cell text */
+    height: 50px;
+}
+
+/* Equal Width Columns */
+.table-container th, .table-container td {
+    width: 33.33%; /* Divide the width equally among three columns */
+}
+
+/* Table Container */
+.table-container2 {
+    border-collapse: separate; /* Change to 'separate' for internal cell borders */
+    width: 100%; /* Adjust table width as needed */
+    text-align: Left; /* Align text to the center for uniformity */
+    font-size: 1em;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 50px;
+
+}
+
+/* Table Styling */
+.table-container2 table {
+    border-collapse: separate; /* Change to 'separate' for internal cell borders */
+    width: 95%; /* Adjust table width as needed */
+    text-align: left; /* Align text to the center for uniformity */
+    font-size: 1em;
+}
+
+.table-container2 .total-row td {
+    font-weight: bold;
+}
+
+/* Header Row Style */
+.table-container2 th {
+    background-color: white; /* White background for header */
+    color: #007bff; /* Blue color for header text */
+    font-weight: bold; /* Bold font for header text */
+    border: none; /* No border for header cells */
+}
+
+/* Table Cell Styling */
+.table-container2 td {
+    border-bottom: 1px solid #f5f5f5; /* Light grey bottom border for cells */
+    padding: 8px; /* Padding inside cells */
+    background-color: #ffffff; /* Very light grey for cell background */
+    color: black; /* Black font color for cell text */
+    height: 50px;
+}
+
+/* Equal Width Columns */
+.table-container2 th, .table-container2 td {
+    width: 33.33%; /* Divide the width equally among three columns */
+}
+
+
+.additional-text {
+    position: relative;
+    font-size: 1em; /* Default font size for the container */
+    text-align: left;
+    margin-top: 10px;
+}
+
+.additional-text p {
+    margin-bottom: 0px; /* Default space between paragraphs */
+    line-height: 1.5;
+}
+
+/* Styling for the first paragraph specifically */
+.additional-text p:first-child {
+    font-size: 0.75em; /* Smaller font size */
+    margin-top: 30px;
+    margin-bottom: 60px; /* Increased space below this paragraph */
+    margin-left: 50px;
+    font-style: italic; /* Makes the text italicized */
+}
+
+/* Apply blue color and optional styling to "Central Statistics Office" */
+.additional-text .source {
+    color: #007bff;
+    text-decoration: none !important;
+}
+
+.additional-text p:nth-child(2) strong {
+    color: #007bff; /* Blue color for the key findings text */
+}
+
+.additional-text .press-release {
+    color: #007bff; /* Blue color for the press release link */
+    text-decoration: none !important; /* Removes underline from link */
+}
+
+.additional-text .press-release:hover {
+    text-decoration: underline !important; /* Adds underline on hover */
+}
+
+.additional-text .credits {
+    font-size: 0.7em; /* Makes the text smaller than the surrounding text */
+    color: lightgrey; /* Sets the text color to light grey */
+    font-style: italic; /* Makes the text italicized */
+}
+
+.mapsection {
+    flex-grow: 2.1; /* Increase this value to give more space to the fixed content */
+    flex-basis: 0; /* Use flex-basis as 0 to allow flex-grow to control the size */
+    height: calc(88vh - 70px); /* Adjust for header height */
+    overflow-y: auto;
+    padding: 0px;
+    position: sticky;
+    top: 140px; /* Adjusted to match header height */
+    align-items: center; /* Center children horizontally */
+    margin-top: -70px; /* Move the map section upwards by 70px */
+}
+
+#map {
+    max-width: 100%;
+    height: 100%; /* You might adjust this value based on the header visibility toggle */
+}
+
+.legend-container {
+    position: absolute;
+    bottom: 5%;
+    cursor: pointer;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for the element's width to ensure true centering */
+}
+
+.legend-container2 {
+    position: absolute;
+    bottom: 5%;
+    cursor: pointer;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for the element's width to ensure true centering */
+}
+
+
+.legend-button {
+    width: auto; /* Adjusts automatically to content's width */
+    height: auto; /* Adjusts automatically to content's height */
+    max-width: 90px;
+    max-height: 55px;
+    display: block; /* This makes it easier to manage display */
+    position: relative;
+}
+
+.heatmap-legend {
+    display: none;
+    position: absolute;
+    top: calc(50% - 10px); /* Adjust to move up slightly */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 300px;
+    max-height: auto;
+}
+
+
+/* Dropdown Filter Styles */
+.filter-dropdown {
+    position: absolute;
+    min-width: 150px;
+    top: 15px; /* Keep it 15px from the top or adjust as needed */
+    left: 50%; /* Center horizontally relative to the parent */
+    transform: translateX(-50%); /* Adjust horizontally to truly center */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+    padding: 5px 5px;
+    z-index: 2;
+}
+
+.filter-dropdown select {
+    border: none; /* Remove default border */
+    background: transparent; /* Transparent background to match the container */
+    padding: 3px; /* Padding for the select element */
+    width: 100%; /* Ensure it fills its container */
+    -webkit-appearance: none; /* Remove default style on WebKit browsers */
+    -moz-appearance: none; /* Remove default style on Mozilla browsers */
+    appearance: none; /* Standard way to remove default style */
+}
+
+.filter-dropdown::after {
+    content: "▼"; /* Add a dropdown arrow */
+    position: absolute;
+    right: 10px; /* Position the arrow to the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for exact centering */
+    pointer-events: none; /* Prevent interaction with the arrow */
+}
+
+
+.site-footer {
+    height: 130px; /* Adjusted footer height */
+    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    color: #333; /* Dark text color for contrast */
+    text-align: center; /* Align text to the left */
+    line-height: 20px; /* Adjust line height for better text alignment */
+    max-width: 100%; /* Full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Vertically stack footer content */
+    padding: 20px; /* Padding for inner spacing */
+}
+
+
+.footer-content {
+    margin: 5px 0; /* Space between text sections */
+    font-size: 1em; /* Larger text size */
+    text-decoration: none !important;
+    color:  #000;
+}
+
+.social-media-icons {
+    margin: 10px 0;
+}
+
+.social-media-icons a {
+    margin: 0 30px;
+    display: inline-block;
+}
+
+.social-media-icons img {
+    width: 25px;
+    height: 25px;
+}
+
+.email-link {
+    color: #ffffff; /* Bright blue color */
+    text-decoration: none !important; /* Removes underline from links */
+}
+
+.email-link:hover {
+    text-decoration: underline !important; /* Adds underline on hover for better user interaction */
+}
+
+
+/* Overview webpage required differences - some differences included in Transport also*/
+
+.overview-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Adjust this as needed to align the texts vertically */
+}
+
+.overviewtext {
+    font-size: 1.2em;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: -10px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.demographics-info {
+    color:rgb(0, 36, 96);
+}
+
+.see-more-link {
+    font-size: 1em;
+    color: rgb(0, 36, 96);
+    text-decoration: none !important; /* Remove underline */
+    display: inline-flex; /* Align icon with text */
+    align-items: center; /* Center the text and icon vertically */
+    transition: color 0.3s ease; /* Smooth color transition */
+    margin-right: 4%;
+}
+
+.see-more-link i {
+    margin-left: 5px; /* Space between text and icon */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.see-more-link:hover {
+    color: #0056b3; /* Change link color on hover */
+}
+
+.see-more-link:hover i {
+    transform: translateX(5px); /* Move the icon to the right on hover */
+}
+
+.belowtable-text .belowtable {
+    font-size: 0.7em; /* Sets the font size to 0.7em */
+    color: #cccccc; /* Light grey color; adjust the hex code as needed */
+    font-style: italic; /* Makes the text italic */
+    margin-bottom: 50px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.transport-info {
+    font-size: 1em; /* Sets the font size to 1.1em */
+    margin-left: 2%;
+
+}
+
+.transport-info .small-text {
+    font-size: 0.8em; /* Sets the font size of the text within the span to 0.8em */
+}
+
+.transport-links {
+    color: rgb(0, 36, 96); /* Light pink color */
+}
+
+.bus {
+    height: auto; /* Adjust this based on your logo's size */
+    width: 40px; /* Adjust this based on your logo's size */
+    margin-right: 10px;
+    vertical-align: middle;
+    margin-bottom: -13px;
+    margin-left: 10px;
+}
+
+.tram {
+    height: auto; /* Adjust this based on your logo's size */
+    width: 40px; /* Adjust this based on your logo's size */
+    margin-right: 10px;
+    vertical-align: middle;
+    margin-top: 3px;
+    margin-bottom: -13px;
+    margin-left: 10px;
+}
+
+.amenity-nearby {
+    color: rgb(0, 36, 96); /* Light pink color */
+}
+
+.school-nearby {
+    color: rgb(0, 36, 96); /* Light pink color */
+}
+
+.reviews-nearby {
+    color: rgb(0, 36, 96); /* Light pink color */
+}
+
+.propertyoverview {
+    color: rgb(0, 36, 96);
+}
+
+.compare-areas {
+    color: rgb(0, 36, 96); /* Light pink color */
+}
+.amenity-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Creates flexible columns */
+    gap: 20px; /* Space between grid items */
+    max-width: 800px; /* Maximum width of the grid */
+    margin: 20px auto; /* Center the grid horizontally with margin */
+    padding: 20px; /* Adds padding around the grid */
+    box-sizing: border-box; /* Includes padding in the element's total width and height */
+}
+
+.amenity-overview {
+    display: flex; /* Ensures the flex container works inline for <a> */
+    flex-direction: column; /* Stack children (number and text) vertically */
+    align-items: center; /* Center-align items horizontally */
+    justify-content: center; /* Center content vertically within the button */
+    padding: 5px; /* Adjust padding for more space */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+    background: #ffffff; /* White background for the button */
+    border-radius: 10px; /* Rounds the corners of the buttons */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for a modern look */
+    border: 1px solid rgba(2, 24, 61, 0.1); /* Adds a very light border */
+    cursor: pointer; /* Changes the mouse cursor to a pointer when hovering over the buttons */
+    text-align: center; /* Center the text */
+    text-decoration: none !important; /* Removes underline from links */
+    color: #000; /* Ensures the text color matches the specified color */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.amenity-overview:hover {
+    transform: translateY(-5px); /* Slightly lift the button on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Deepen the shadow on hover */
+}
+
+.amenity-overview .number {
+    font-size: 1.2em; /* Larger font size for the number */
+    font-weight: bold; /* Bold font for emphasis */
+    color: #007bff; /* Sets the color of the number */
+}
+
+.amenity-overview .label {
+    font-size: 0.9em; /* Normal font size for the label */
+    font-weight: bold;
+    color: #000; /* Dark grey color for the label text */
+}
+
+.table-review table {
+    max-width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif; /* Example font */
+    table-layout: fixed; /* Ensures fixed layout for the table */
+    width: 100%; /* Ensures the table takes full width */
+}
+
+@media (max-width: 992px) {
+
+    .table-review td:first-child {
+        color: #007bff;
+        width: 50px; /* Adjust width as needed */
+        font-weight: bold;
+        text-align: center; /* Center the rating in the cell */
+    }
+}
+
+.table-review td {
+    padding: 10px;
+    vertical-align: top; /* Align content to the top of the cell */
+    overflow-wrap: break-word; /* Ensures long words are wrapped */
+}
+
+.table-review td:first-child {
+    color: #007bff;
+    width: 50px; /* Adjust width as needed */
+    font-weight: bold;
+    text-align: center; /* Center the rating in the cell */
+}
+
+@media (max-width: 992px) {
+
+    .table-review td:first-child {
+        width: 30px; /* Adjust width as needed */
+    }
+}
+
+
+.table-review td:nth-child(2) {
+    width: calc(100% - 50px); /* Ensures the second column takes the remaining space */
+    padding-left: 10px; /* Adds some padding for better readability */
+}
+
+.table-review table tr:not(:last-child) {
+    border-bottom: 1px solid lightgrey; /* Adds a light grey border to the bottom of each row except the last one */
+}
+
+.table-review table tr:last-child td {
+    border-bottom: none; /* Ensures no border at the bottom of the last row */
+}
+
+.table-review strong {
+    display: block; /* Make the summary a block to separate it from the date */
+    margin-bottom: 4px; /* Space between the summary and the date */
+    color: black; /* Dark text for contrast */
+}
+
+.table-review span {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Align the emoji with the text */
+    color: black; /* Grey color for the location text */
+}
+
+.table-review .area {
+    font-weight: bold; /* Make the area bold */
+    display: flex;
+    align-items: center;
+}
+
+
+.area {
+    display: block; /* Ensures the area class starts on a new line */
+    margin-top: 5px; /* Adds space above the area class if required */
+}
+
+
+.property-count {
+    font-size: 1em; /* Sets the base font size for the text */
+    padding: 20px 0; /* Adds 20px of padding above and below the text */
+    color: black; /* Sets the default text color */
+    margin-left: 3%;
+}
+
+.count-number {
+    font-size: 1.5em; /* Makes the number 50% larger than the surrounding text */
+    color: #007bff; /* Sets the number's color to blue */
+    font-weight: bold; /* Makes the number bold */
+}
+
+.compare-content {
+    display: flex; /* Enables flexbox layout */
+    align-items: flex-start; /* Aligns items to the top */
+    gap: 10px; /* Adds space between the image and the text */
+}
+
+.compare-image {
+    flex-shrink: 0; /* Prevents the image from shrinking */
+    width: auto; /* Adjust based on the image's intrinsic width or set a specific width */
+    max-width: 100%; /* Ensures the image is responsive and doesn't overflow its container */
+}
+
+.compare-description {
+    Margin: 0;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+/* Transport webpage required differences */
+
+.mapsection2 {
+    flex-grow: 2.1; /* Increase this value to give more space to the fixed content */
+    flex-basis: 0; /* Use flex-basis as 0 to allow flex-grow to control the size */
+    height: calc(88vh - 70px); /* Adjust for header height */
+    overflow-y: auto;
+    padding: 0px;
+    position: sticky;
+    top: 140px; /* Adjusted to match header height */
+    align-items: center; /* Center children horizontally */
+    margin-top: -70px; /* Move the map section upwards by 70px */
+}
+
+#map {
+    max-width: 100%;
+    height: 100%; /* You might adjust this value based on the header visibility toggle */
+}
+
+.containercompare {
+    display: flex;
+    min-height: 1500px;
+    max-width: 1425px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 140px; /* Adjusted to account for both header and nav bar heights */
+    box-sizing: border-box;
+}
+
+
+
+.grey-line {
+    height: 1px;
+    background-color: #cfe5f5;
+    width: 100% +40px; /* Adjusted line length */
+    margin-top: 5px; /* Space between text and line */
+    margin-left: -40px;
+}
+
+.demographics-text {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.publict-text {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-left: 2%;
+}
+
+.car-travel-text {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-left: 2%;
+}
+.table-publict, .table-cartravel {
+    width: 100%; /* Adjust table width as needed */
+    margin: 0 auto; /* Center the table container */
+    display: block; /* Updated to block for proper table display */
+    position: relative;
+    top: 5px;
+    bottom: 5px;
+}
+
+/* Table Styling */
+.table-publict table, .table-cartravel table {
+    border-collapse: collapse;
+    width: 100%; /* Adjust table width as needed */
+    text-align: left; /* Align text to the center for uniformity */
+    font-size: 0.9em;
+}
+
+.table-publict td, .table-cartravel td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid lightgrey;
+}
+
+.table-publict .blue-bold, .table-cartravel .blue-bold {
+    font-weight: bold;
+    color:#007bff;
+    font-size: 1.1em;
+}
+
+.table-publict  .black-bold, .table-cartravel .black-bold {
+    font-weight: bold;
+    color: black;
+}
+
+.table-publict  .black-bold2, .table-cartravel .black-bold2 {
+    font-weight: bold;
+    color: black;
+    font-size: 1.1em;
+}
+
+.table-publict  .route-bold, .table-cartravel .route-bold {
+    font-weight: bold;
+    color: black;
+}
+
+.table-publict   .route-number, .table-cartravel .route-number {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1.1em;
+}
+
+.table-publict   .blue-bold2, .table-cartravel .blue-bold2 {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1em;
+}
+
+/* Equal Width Columns */
+.table-publict td, .table-cartravel td, .table-demoverview td {
+    width: 33.33%; /* Divide the width equally among six columns */
+}
+
+/* Hide rows that are not the first 6 */
+.table-publict tr:nth-child(n+7), .table-cartravel tr:nth-child(n+7) {
+    display: none;
+}
+
+.seemorepublict #seemore {
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #007bff;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    cursor: pointer; /* Changes the cursor to indicate it's clickable */
+}
+
+
+.seemorecar #seemoreCar {
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #007bff;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    cursor: pointer; /* Changes the cursor to indicate it's clickable */
+}
+
+
+
+
+
+/* Schools webpage required differences */
+.table-schools {
+    width: 100%; /* Adjust table width as needed */
+    margin: 0 auto; /* Center the table container */
+    display: block; /* Updated to block for proper table display */
+    position: relative;
+    top: 15px;
+    bottom: 5px;
+    text-align: left;
+    font-size: 1em;
+    margin-left: 2%;
+}
+
+
+
+
+/* Table Cell Styling */
+.table-schools td, table-schools th {
+    border-bottom: 1px solid #f5f5f5; /* Light grey bottom border for cells */
+    padding: 8px; /* Padding inside cells */
+    background-color: #ffffff; /* Very light grey for cell background */
+    color: black; /* Black font color for cell text */
+    height: 70px;
+}
+
+/* Equal Width Columns */
+.table-schools th, .table-schools td {
+    min-width: 150px;
+}
+
+/* First column bold */
+.table-schools td:first-child,
+.table-schools th:first-child {
+    font-weight: bold;
+}
+
+/* Second column light blue text */
+.table-schools td:nth-child(2) {
+    color: #007bff; /* This is a light blue color; adjust the hex as needed */
+}
+
+/* Schools details webpage required differences */
+.table-school-details {
+    width: 100%; /* Adjust table width as needed */
+    margin: 0 auto; /* Center the table container */
+    display: block; /* Updated to block for proper table display */
+    position: relative;
+    top: 15px;
+    bottom: 5px;
+}
+
+.table-school-details {
+    border-collapse: separate;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+}
+
+
+/* Table Cell Styling */
+.table-school-details td, table-school-details th {
+    border-bottom: 1px solid #f5f5f5; /* Light grey bottom border for cells */
+    padding: 8px; /* Padding inside cells */
+    background-color: #ffffff; /* Very light grey for cell background */
+    color: black; /* Black font color for cell text */
+    height: 50px;
+}
+
+/* Equal Width Columns */
+.table-school-details th, .table-school-details td {
+    width: 270px;
+}
+
+.table-school-details td:first-child {
+    font-weight: bold;
+}
+
+
+
+
+/* Amenities webpage required differences */
+.amenity-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Creates 3 columns of equal width */
+    grid-gap: 10px; /* Space between grid items */
+    max-width: 600px; /* Maximum width of the grid */
+    max-height: 150px; /* Maximum height of the grid */
+    margin-left: auto; /* Center the grid horizontally */
+    margin-right: auto;
+    padding: 10px; /* Optional: Adds some padding around the grid */
+    box-sizing: border-box; /* Includes padding in the element's total width and height */
+}
+
+.amenity-button {
+    /* Styling for buttons */
+    padding: 10px; /* Adjust padding as needed */
+    width: 100%; /* Ensure buttons fill their cell */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+    height: 30px; /* Fixed height for each button */
+    background-color: white; /* Sets the background color to white */
+    border-radius: 15px; /* Rounds the corners of the buttons for a more rounded rectangle */
+    border: 1px solid #ccc; /* Optional: adds a light border to the button; adjust or remove as needed */
+    cursor: pointer; /* Changes the mouse cursor to a pointer when hovering over the buttons */
+    font-size: 0.9em;
+
+    /* Centering text vertically and horizontally */
+    display: flex;
+    align-items: center; /* Vertically centers the text */
+    justify-content: center; /* Horizontally centers the text */
+    text-align: center; /* Ensures text alignment is centered (may be redundant with flex but can be helpful for fallback) */
+}
+
+.amenity-button-selected {
+    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    color: #ffffff; /* White text for selected state */
+    font-weight: bold; /* Makes the font bold */
+}
+
+.icon-container {
+    margin-top: 10px;
+    height: 40px;
+    margin-left: 2%;
+}
+
+.amenity-icon {
+    width: 50px;
+    height: auto;
+}
+
+.icon-container2 {
+    margin-top: 10px;
+    height: 50px;
+    margin-left: 2%;
+}
+
+.schools-icon {
+    width: 40px;
+    height: auto;
+}
+
+.table-amenities {
+    width: 100%; /* Adjust table width as needed */
+    margin-left: 5%; /* Center the table container */
+    display: block; /* Updated to block for proper table display */
+    position: relative;
+    top: 2px;
+    bottom: 5px;
+    text-align: left;
+    border-collapse: separate; /* Change to 'separate' for internal cell borders */
+}
+
+
+/* Table Cell Styling */
+.table-amenities td {
+    border-bottom: 1px solid #f5f5f5; /* Light grey bottom border for cells */
+    padding: 8px; /* Padding inside cells */
+    background-color: #ffffff; /* Very light grey for cell background */
+    color: black; /* Black font color for cell text */
+    height: 70px;
+}
+
+/* Equal Width Columns */
+.table-amenities td {
+    width: 190px;
+}
+
+/* Area review webpage required differences */
+
+
+.review-button-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    padding-right: 20px; /* Adjust this value to control how far right the button should be */
+    margin-bottom: 20px;
+}
+
+.review-button {
+    display: inline-flex; /* Align icon with text */
+    align-items: center; /* Center the text and icon vertically */
+    padding: 5px 15px;
+    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    color: white;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none !important;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Adds shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.review-button i {
+    margin-left: 5px; /* Space between text and icon */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.review-button:hover {
+    background-color: #0056b3; /* Change button color on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.review-button:hover i {
+    transform: translateX(5px); /* Move the icon to the right on hover */
+}
+
+.review-button-container .blue-text {
+    color: #007bff; /* Adjust the blue color as needed */
+}
+
+.review-text-collapse {
+    max-height: 3.5em;
+    overflow: hidden;
+}
+
+.p-desc{
+    padding: 0.5em 0;
+    line-height: 1em;
+}
+
+.rating-circle {
+    display: inline-block;
+    width: 40px; /* Diameter of the circle */
+    height: 40px; /* Diameter of the circle */
+    line-height: 40px; /* Centers the text vertically */
+    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    color: white !important; /* Text color */
+    justify-content: center;
+    border-radius: 50%; /* Makes the element a circle */
+    font-weight: bold; /* Bold text */
+    font-size: 1em; /* Adjust as needed for size */
+}
+
+/* Selector for the rounded rectangles container */
+.reviewrounded-rectangles {
+    display: flex; /* Continue using flex to layout the rectangles */
+    flex-wrap: wrap; /* Allows rectangles to wrap to the next line */
+    gap: 5px; /* Keeps the space between rectangles */
+    padding: 10px 0; /* Vertical padding without horizontal padding */
+    max-width: 100%; /* Ensures the container does not exceed the parent width */
+}
+/* Selector for the individual rectangles */
+.reviewrounded-rectangles span {
+    background-color: #cfe5f5; /* Light blue background */
+    color: #000000; /* Black text, for higher contrast consider white */
+    padding: 5px 10px; /* Padding inside each rectangle */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 0.9em; /* Text size */
+    white-space: nowrap; /* Prevents text from wrapping */
+    flex-shrink: 0; /* Prevents the rectangles from shrinking */
+}
+
+.seefullreview {
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 10px 0;
+    cursor:pointer;
+}
+
+#reviews-no {
+    margin: 20px 0 2% 3%;
+}
+
+/* Planning webpage required differences */
+.live-table table, .decisioned-table table {
+    border-collapse: collapse; /* Ensure borders collapse */
+    width: 100%; /* Table takes full width */
+    font-size: 1em;
+}
+
+.live-table th, .decisioned-table th, .live-table td, .decisioned-table td {
+    padding: 8px;
+    vertical-align: top;
+    min-height: 70px; /* Ensures a minimum height for cells */
+    border-bottom: 1px solid #d3d3d3; /* Light grey border for each row */
+    width: 50%; /* Each cell takes 50% of the width */
+}
+
+/* Adjustments for the header cells for better visibility and alignment */
+.live-table .live-header, .decisioned-table .decision-header {
+    text-align: center;
+    font-weight: bold;
+    color: white; /* Text color */
+    height: auto; /* Allows dynamic height adjustment */
+    background-color: #007bff; /* Blue background for the header */
+    padding: 10px; /* Padding for better readability */
+}
+
+/* Background colors for headers */
+.live-table .live-header {
+    background-color: #2bd0c3; /* Green background for live table header */
+}
+
+.decisioned-table .decision-header {
+    background-color: #93def1; /* Blue background for decisioned table header */
+}
+
+/* Additional styles */
+.decision-text, .small-date {
+    display: block; /* Treats content as block for layout purposes */
+}
+
+.decision-text {
+    font-weight: bold;
+    color: black; /* Decision text styling */
+    margin-top: 8px; /* Adds space between the address and decision text */
+}
+
+.small-date {
+    font-size: 0.8em; /* Smaller font size for date text */
+    font-weight: 100;
+}
+
+.live-table a, .decisioned-table a {
+    text-decoration: none !important;
+    color: #007bff; /* Standard link color */
+}
+
+.live-table {
+    margin-bottom: 50px; /* Adds space below the live table */
+}
+
+.live-table tr:last-child td, .decisioned-table tr:last-child td {
+    border-bottom: none; /* Removes the border from the bottom of the last row */
+}
+
+.planning-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px; /* Adjust the max width as necessary */
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+}
+
+.planning-section {
+    margin-bottom: 20px;
+}
+
+.planning-section h2 {
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.planning-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666666;
+}
+
+.map-view {
+    background-color: #ffffff;
+}
+
+.site-footer a {
+    color: #ffffff;
+    text-decoration: none !important;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Property webpage required differences */
+
+.propcompare-button-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    padding-right: 20px; /* Adjust this value to control how far right the button should be */
+}
+
+.propcompare-button {
+    display: inline-block; /* Keeps the button's text aligned and allows for padding */
+    padding: 5px 10px;
+    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none !important;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    text-align: center; /* Ensures the text inside the button is centered */
+    /* No need for margin:auto here since flex-end takes care of alignment */
+}
+
+.propcompare-button-container .blue-text {
+    color: #007bff; /* Adjust the blue color as needed */
+}
+
+.table-property {
+    margin-top: 10px; /* Space above the table */
+    background-color: #ffffff; /* White background for the entire table container */
+}
+
+.table-property table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.table-property td {
+    width: 50%;
+    height: 50px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Light grey bottom border for each row */
+    font-size: 1.1em;
+    text-align: left; /* Left-aligned text for all cells */
+}
+
+.table-property tr:last-child td {
+    border-bottom: none; /* No border for the last row to prevent double borders */
+}
+
+.table-property td:first-child {
+    font-weight: bold; /* Bold font for first column */
+    color: #007bff; /* Black color for first column */
+}
+
+.information-note {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-bottom: 5px; /* Space before the table */
+    margin-top: 30px;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.compare-link {
+    color: #007bff; /* Blue color for the compare link */
+    font-weight: bold; /* Bold font for the compare link */
+    text-decoration: none !important;
+}
+
+.no-underline {
+    text-decoration: none !important; /* Removes the underline */
+}
+
+.text-in-brackets {
+    font-size: 0.7em; /* Makes text smaller relative to its parent's font size */
+}
+
+.property-container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px; /* Adjust as necessary to fit your design */
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+}
+
+.property-section {
+    margin-bottom: 20px;
+}
+
+.property-section h2 {
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.property-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666666;
+}
+
+
+
+
+
+/* Small laptops media section */
+@media (max-width: 1330px) {
+
+    .nav {
+        margin-left: 0;
+        padding-left: 0;
+        display: inline-block;
+        white-space: nowrap;
+        overflow-y: hidden; /* Prevent vertical scrolling */
+    }
+
+    .navigation a {
+        margin: 0 10px; /* Spacing between navigation items */
+    }
+
+    .subnav {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+        align-items: center;
+        justify-content: flex-end;
+
+    }
+
+
+    .subnav a {
+        margin: 20px 15px;
+    }
+
+
+    .location-button {
+        min-width: 120px; /* Minimum width for all buttons */
+    }
+
+    .tooltip-text {
+        width: 100%;
+        left: 5%;
+    }
+
+    /* Style specific to the Transport webpage */
+    .table-publict   .type-column, .destination-column {
+        display: none;
+    }
+
+    /* Equal Width Columns */
+    .table-schools th, .table-schools td {
+        min-width: 130px;
+    }
+
+
+    @media (max-width: 1250px) {
+
+        .subnav a {
+            margin: 20px 15px;
+        }
+
+
+        @media (max-width: 1175px) {
+
+            .subnav a {
+                margin: 20px 13px;
+            }
+
+
+
+            @media (max-width: 1135px) {
+
+                .subnav a {
+                    margin: 20px 11px;
+                    font-size: 1em;
+                }
+
+                @media (max-width: 1080px) {
+
+                    .subnav a {
+                        margin: 20px 9px;
+                        font-size: 1em;
+                    }
+
+
+                    @media (max-width: 1040px) {
+
+                        .subnav a {
+                            margin: 20px 8px;
+                            font-size: 0.95em;
+                        }
+
+                        @media (max-width: 980px) {
+
+                            .subnav a {
+                                margin: 20px 8px;
+                                font-size: 0.9em;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 1100px) {
+    .review-link {
+        display: none;
+    }
+}
+
+
+
+
+/* Tablet media section */
+@media (max-width: 992px) {
+
+    .nav-header-text {
+        font-size: 1.5em;
+    }
+
+    .nav {
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+        height: 50px;
+        line-height: 50px;
+    }
+
+    /* For Webkit browsers (Chrome, Safari) */
+    .nav::-webkit-scrollbar {
+        height: 6px; /* Adjust the height of the horizontal scrollbar */
+    }
+
+    .nav::-webkit-scrollbar-thumb {
+        border-radius: 10px; /* Rounded corners of the scrollbar handle */
+    }
+
+    /* For Firefox */
+    .nav {
+        scrollbar-width: thin; /* Makes the scrollbar thinner */
+    }
+
+    /* For Internet Explorer and Edge */
+    .nav {
+        -ms-overflow-style: -ms-autohiding-scrollbar; /* Automatically hide the scrollbar */
+    }
+
+
+    .navigation a {
+        font-size: 0.9em; /* Scalable font size */
+        margin: 0 9px; /* Spacing between navigation items */
+    }
+
+    .widgets-link, .about-link, .login-link {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 20px; /* Width of the hamburger menu */
+        height: 18px; /* Total height of the hamburger menu */
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    .hamburger-menu span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: #333; /* Color of the hamburger lines */
+    }
+
+    .hamnav {
+        display: none; /* Initially hidden */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: 3000; /* Ensure it's above other content */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+        padding: 20px;
+        box-sizing: border-box; /* Include padding in width/height calculations */
+    }
+    .nav-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-header-text {
+        font-weight: bold;
+        color: #02183d;
+        font-size: 2em;
+        margin-left: 15px;
+    }
+    .nav-logo {
+        margin-right: 10px;
+        height: auto;
+        width: 70px;
+    }
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px; /* Space below the header */
+    }
+    .nav-links li {
+        border-bottom: 1px solid #f0f0f0; /* Very light grey border */
+        padding: 10px 0;
+    }
+    .nav-links li a {
+        text-decoration: none !important;
+        color: black; /* Adjust as needed */
+        font-size: 1.2em; /* Adjust as needed */
+        display: block;
+    }
+    .nav-footer {
+        font-size: 14px; /* Smaller font size */
+        text-align: center;
+        margin-top: 20px; /* Space above the footer links */
+        margin-right: 20px;
+        padding-top: 10px; /* Space within the footer */
+    }
+    .nav-footer a {
+        text-decoration: none !important;
+        color: #007bff; /* Adjust as needed */
+    }
+
+    .nav-close {
+        position: absolute;
+        top: 45px; /* Distance from the top */
+        right: 5%; /* Distance from the right */
+        cursor: pointer;
+        font-size: 18px; /* Smaller size */
+        z-index: 101; /* Ensure it's above other nav content */
+        background: none; /* Removes default background for button */
+        border: none; /* Removes default border for button */
+        padding: 0; /* Removes default padding for button */
+        color: #333; /* Adjust color as needed */
+        font-weight: bold;
+    }
+
+    .hamimage {
+        align-self: center; /* Center the image horizontally */
+        margin-bottom: 20px; /* Adjust the margin as needed */
+        width: 95%; /* Adjust the width as needed */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Style the "Demographics" link */
+    .navigation a[href="#demographics"] {
+        padding: 5px 5px; /* Adjust padding as needed */
+
+    }
+    .subnav {
+        position: fixed; /* Keep it fixed like the header and nav */
+        top: 120px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+        height: 50px;
+        width: 100%;
+        max-width: 100%;
+        left: 0px;
+        z-index: 998;
+        align-items: center;
+        justify-content: center; /* Spread the links evenly across the space */
+
+
+    }
+
+    @media (max-width: 500px) {
+
+        .subnav {
+            justify-content: flex-start; /* Spread the links evenly across the space */
+        }
+    }
+
+
+    .subnav .arrow-left, .subnav .arrow-right {
+        position: fixed;
+        top: 120px;
+        border-radius: 5px; /* Change to a smaller border radius for rectangles */
+        background-color: #ffffff;
+        width: 30px; /* Increase width for rectangle shape */
+        height: 50px; /* Adjust height as necessary */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .subnav .arrow-left {
+        left: 0px;
+        color: #000;
+    }
+
+    .subnav .arrow-right {
+        right: 0px;
+        color: #000;
+    }
+
+    .subnav .arrow-left.hidden, .subnav .arrow-right.hidden {
+        display: none;
+    }
+
+    /* Media queries */
+    @media (max-width: 432px) {
+        .subnav .arrow-left, .subnav .arrow-right {
+            display: flex;
+        }
+
+        .subnav {
+            padding-right: 50px; /* Add padding to the right end */
+        }
+    }
+
+    .subnav a {
+        font-size: 0.9em; /* Using em makes it scalable */
+        color: #000000;
+        margin: 0px 9px; /* Adjusted spacing for subnavigation items */
+    }
+
+
+    .ethnic-profile-link {
+        font-weight: bold; /* Make the text bold */
+        color:#007bff !important;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding-top: 170px; /* Keep existing adjustment */
+        min-height: 1800px;
+        max-width: 100%;
+    }
+
+    /* Style specific to the Transport webpage */
+
+    .containercompare {
+        display: flex;
+        flex-direction: column;
+        padding-top: 170px;
+        min-height: 3300px; /* need to update this so it increases and decreases in size with tables*/
+        max-width: 100%;
+    }
+
+
+    .containeroverview {
+        display: flex;
+        flex-direction: column;
+        padding-top: 170px; /* Keep existing adjustment */
+        min-height: 2600px; /* Changed to auto to accommodate content */
+        max-width: 100%;
+    }
+
+    /* Style specific to the Transport webpage */
+    .table-publict   .type-column, .destination-column {
+        display: none;
+    }
+
+
+    /* Equal Width Columns */
+    .table-schools th, .table-schools td {
+        min-width: 100px;
+    }
+
+    .mapsection {
+        height: 55vh;
+        position: fixed;
+        top: 120px;
+        width: 100%;
+        margin-top: 0;
+        z-index: 5;
+    }
+
+    #map {
+        max-width: 100%;
+        height: 55vh;
+    }
+
+    .scroll-pane {
+        position: relative; /* Make the scroll-pane fixed at the bottom */
+        width: 100%; /* Ensure full width */
+        padding: 0px;
+        padding-top: 0px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        border-top-left-radius: 20px; /* Optional: Adds rounded corners at the top */
+        border-top-right-radius: 20px; /* Optional: Adds rounded corners at the top */
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow above the bottom sheet to give depth */
+        z-index: 100; /* Ensure it's above other content */
+        top: 0px;
+        margin-top: 57vh;
+        background-color: #ffffff;
+        /* New styles for the handle */
+        --handle-height: 4px; /* Height of the handle */
+        --handle-width: 20%; /* Width of the handle, relative to the scroll-pane's width */
+        --handle-margin-top: 13px; /* Space above the handle */
+        --handle-background-color: #ccc; /* Color of the handle */
+
+    }
+
+    .scroll-pane::before {
+        content: ""; /* Required for the pseudo-element to be generated */
+        display: block; /* Make it a block-level element */
+        height: var(--handle-height);
+        width: var(--handle-width);
+        background-color: var(--handle-background-color);
+        margin: var(--handle-margin-top) auto 10px; /* Center the handle horizontally with auto margins */
+        border-radius: 2px; /* Optional: Rounded corners for the handle */
+    }
+
+    .scroll-pane.hide {
+        transform: translateY(100%); /* Slides the bottom sheet down off the screen */
+    }
+
+    .scrollable-content {
+        max-width: 100%;
+    }
+
+    .scrollable-content h2 {
+        margin-bottom: 20px; /* Space between the heading and the location buttons */
+        margin-top: 20px; /* Space above and below the heading and buttons */
+        margin-left: 15px;
+        margin-right: 15px;
+        font-size: 1.1em;
+        max-width: 100%;
+    }
+
+    .scrollable-content br {
+        display: none;
+    }
+
+    .scrollable-content h3 {
+        margin-bottom: 20px; /* Space between the heading and the location buttons */
+        margin-top: 20px; /* Space above and below the heading and buttons */
+        margin-left: 15px;
+        margin-right: 15px;
+        font-size: 1em;
+        max-width: 100%;
+    }
+
+    /* Location Buttons Container */
+    .location-buttons {
+        margin-top: 15px;
+        margin-bottom: 45px; /* Space between the buttons and the table */
+    }
+
+    /* Individual Location Button */
+    .location-button {
+        min-width: 110px; /* Minimum width for all buttons */
+        height: 40px; /* Fixed height for all buttons */
+        margin: 0 5px; /* Reduced space between buttons */
+        white-space: wrap; /* Prevent text wrapping */
+    }
+
+    .tooltip-text {
+        width: 100%;
+        left: 5%;
+    }
+
+    .table-container {
+        top: 5px;
+        bottom: 5px;
+        max-width: 100%;
+    }
+
+    .table-container table {
+        font-size: 0.9em;
+    }
+
+    .table-container th:nth-child(1), .table-container td:nth-child(1) {
+        width: 50%;
+    }
+
+    /* Targets the second <th> (People) and <td> in every row to be 25% width */
+    .table-container th:nth-child(2), .table-container td:nth-child(2),
+        /* Targets the third <th> (%) and <td> in every row to be 25% width */
+    .table-container th:nth-child(3), .table-container td:nth-child(3) {
+        width: 25%;
+    }
+
+    .table-container2 {
+        bottom: 5px;
+    }
+
+    .table-container2 table {
+        font-size: 0.9em;
+    }
+
+    .table-container2 th:nth-child(1), .table-container2 td:nth-child(1) {
+        width: 50%;
+    }
+
+    /* Targets the second <th> (People) and <td> in every row to be 25% width */
+    .table-container2 th:nth-child(2), .table-container2 td:nth-child(2),
+        /* Targets the third <th> (%) and <td> in every row to be 25% width */
+    .table-container2 th:nth-child(3), .table-container2 td:nth-child(3) {
+        width: 25%;
+    }
+
+    .table-amenities td {
+        width: 150px;
+    }
+
+    .additional-text {
+        max-width: 100%;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 0px;
+        margin-bottom: 10px;
+        top: 0px;
+        font-size: 0.9em;
+    }
+
+    .additional-text p:first-child {
+        font-size: 0.9em; /* Smaller font size */
+        margin-left: 15px;
+        margin-bottom: 15px;
+    }
+
+    .site-footer {
+        position: relative; /* If previously fixed or absolute, making it relative */
+        max-width: 100%;
+        height: 200px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        z-index: 1001;
+        margin-top: 0px;
+
+    }
+
+    .footer-content {
+        margin: 5px 0; /* Space between text sections */
+        font-size: 0.9em; /* Larger text size */
+    }
+
+    .propcompare-button {
+        font-size: 1em;
+    }
+
+
+    @media (max-width: 425px) {
+
+
+        .location-button {
+            min-width: 105px; /* Minimum width for all buttons */
+        }
+
+        @media (max-width: 420px) {
+
+            .location-button {
+                min-width: 105px; /* Minimum width for all buttons */
+            }
+
+
+            @media (max-width: 414px) {
+
+
+                .location-button {
+                    min-width: 105px; /* Minimum width for all buttons */
+                }
+
+                @media (max-width: 410px) {
+
+
+                    .location-button {
+                        min-width: 105px; /* Minimum width for all buttons */
+                    }
+
+                    @media (max-width: 405px) {
+
+
+                        .location-button {
+                            min-width: 105px; /* Minimum width for all buttons */
+                        }
+
+
+                        @media (max-width: 400px) {
+
+
+                            .location-button {
+                                min-width: 100px; /* Minimum width for all buttons */
+                            }
+
+                            @media (max-width: 395px) {
+
+
+                                .location-button {
+                                    min-width: 100px; /* Minimum width for all buttons */
+                                }
+
+                                @media (max-width: 390px) {
+
+                                    .location-button {
+                                        min-width: 100px; /* Minimum width for all buttons */
+                                    }
+
+                                    @media (max-width: 385px) {
+
+                                        .location-button {
+                                            min-width: 100px; /* Minimum width for all buttons */
+                                        }
+
+
+
+                                        @media (max-width: 380px) {
+
+                                            .location-button {
+                                                min-width: 100px; /* Minimum width for all buttons */
+                                            }
+
+                                            @media (max-width: 375px) {
+
+
+                                                .location-button {
+                                                    min-width: 100px; /* Minimum width for all buttons */
+                                                }
+
+
+                                                @media (max-width: 370px) {
+
+                                                    .location-button {
+                                                        min-width: 100px; /* Minimum width for all buttons */
+                                                    }
+
+                                                    @media (max-width: 360px) {
+
+                                                        .location-button {
+                                                            min-width: 90px; /* Minimum width for all buttons */
+                                                        }
+
+                                                        @media (max-width: 350px) {
+
+                                                            .location-button {
+                                                                min-width: 90px; /* Minimum width for all buttons */
+                                                            }
+
+                                                            @media (max-width: 340px) {
+
+                                                                .location-button {
+                                                                    min-width: 85px; /* Minimum width for all buttons */
+                                                                }
+
+
+                                                                @media (max-width: 330px) {
+
+                                                                    .location-button {
+                                                                        min-width: 85px; /* Minimum width for all buttons */
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+/* Mobile devices media section scrolls*/
+@media (max-width: 992px) {
+    .header-ets .header {
+        display: none;
+    }
+    .header-ets .nav.carousel-container {
+        top: 0;
+    }
+
+    .header-ets .subnav {
+        margin-top: -70px;
+    }
+
+
+    .header-ets .subnav .arrow-left,  .header-ets .subnav .arrow-right {
+        margin-top: -70px;
+    }
+
+    .header-ets .mapsection {
+        margin-top: -70px;
+    }
+
+    .header-ets .mapsection2 {
+        margin-top: -70px;
+    }
+
+    .map-dsks-show{
+        display: block !important;
+    }
+    .map-dsks{
+        display: none;
+    }
+    .map-dsks svg {
+        padding-left: 4px;
+    }
+    .map-dsks {
+        background: #082236;
+        color: #fff;
+        position: fixed;
+        bottom: 0;
+        z-index: 99999999999999;
+        left: 50%;  /* Start from the middle of the screen */
+        transform: translateX(-50%);  /* Shift it leftwards by half its own width */
+        border-radius: 50px;
+        font-size: 15px;
+        line-height: 20px;
+        padding: 6px 30px;
+        border-width: 0;
+        margin-bottom: 15px;
+    }
+    .map-dsks a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+    }
+    .footer-content {
+        margin-right: 0 !important;
+    }
+    .subnav::-webkit-scrollbar { /* required, although an apparent no-op */
+        display: none !important;
+    }
+
+    .subnav::-webkit-scrollbar-thumb { /* we apply the style to actually hide it*/
+        display: none !important;
+    }
+    .subnav-link-active {
+        border-bottom: 2px solid #007bff;
+        border-radius: unset !important;
+        text-decoration: unset !important;
+        height: auto !important;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .subnav-link-active {
+        font-weight: bold;
+        color: #007bff !important;
+    }
+
+    /* Styles for the navigation arrows */
+    .carousel-container {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-container .arrow-left, .carousel-container .arrow-right {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 5px; /* Change to a smaller border radius for rectangles */
+        background-color: #ffffff;
+        width: 30px; /* Increase width for rectangle shape */
+        height: 100%; /* Adjust height as necessary */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .carousel-container .arrow-left {
+        left: 0px;
+    }
+
+    .carousel-container .arrow-right {
+        right: 0px;
+    }
+
+    .carousel-container .arrow-left.hidden, .carousel-container .arrow-right.hidden {
+        display: none;
+    }
+
+    /* Scrollable navigation bar */
+    .carousel.navigation {
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        height: 50px;
+    }
+
+    .carousel.navigation .nav-links-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel.navigation a {
+        margin: 0 5px;
+        text-decoration: none !important;
+        color: #000;
+        line-height: 1; /* Adjust line-height if necessary */
+    }
+
+
+
+    .demographics-link {
+        background: rgba(37, 126, 236, 0.8);
+        font-weight: bold;
+    }
+
+}
+
+/* Media query to hide arrows on desktop */
+@media (min-width: 992px) {
+    .carousel-container .arrow-left, .carousel-container .arrow-right {
+        display: none;
+    }
+}

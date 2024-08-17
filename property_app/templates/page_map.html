@@ -1,0 +1,22 @@
+<div id="pi-map-main">
+    <div id="pi-map-datapane">
+        {% include map_template %}
+        {% include "page_footer.html" %}
+    </div>
+    <div id="pi-map-map">
+        <div id="map"></div>
+        {% block maplegend %}
+        {% endblock %}
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyZ2VuYW1vIiwiYSI6ImNsenF0OTd3azFwNWwyanF1NXpzZmlmMjgifQ.yp9f9bDS41v24IN347HaAw';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [9.19828, 45.46193],
+            zoom: 9
+        });
+    </script>
+    <script src="/static/map.js"></script>
+    <script src="{{ map_script_url }}"></script>
+</div>

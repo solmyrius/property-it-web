@@ -29,8 +29,10 @@ SECRET_KEY = 'django-insecure-63su1!iuhxckpl6)6+57tmf^by0thtab#^gu_5pari(=4kkyox
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'puzyrkov.com'
+    'puzyrkov.com',
+    'property.puzyrkov.com'
 ]
+SECURE_REFERRER_POLICY = None
 
 
 # Application definition
