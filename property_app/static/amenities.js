@@ -29,7 +29,7 @@ const amenities = {
         icon: 'cafe.png',
         mapicon: 'cafemap.png'
     },
-    medical: {
+    doctor: {
         'amenity_type': 'medical',
         'color': 'red',
         'label': 'Hospital',
@@ -57,9 +57,13 @@ const amenities = {
         icon: 'sport.png',
         mapicon: 'fitnessmap.png'
     },
+    pharmacy:{
+        mapicon: 'medicalmap.png'
+    }
 };
 
-function updateSectionMap(){
+function PIUpdateSectionMap(){
+
     let loc = PIGetSelectedLocation();
 
     if (loc === null) {
@@ -77,16 +81,16 @@ function updateSectionMap(){
             'point': [loc.lng, loc.lat]
         }),
         success: function (data) {
-            processUpdateResponse(data);
+            PIProcessUpdateResponse(data);
         }
     });
 }
 
-function processUpdateResponse(data) {
+function PIProcessUpdateResponse(data) {
 
     if (data.html !== undefined){
         jQuery("#pi-section-placeholder").html(data.html);
-        PIAmenityActivateSubsection(Object.keys(amenities)[0])
+        PIUpdateAmtFilter();
     }else{
         jQuery("#pi-section-placeholder").html('');
     }
@@ -94,11 +98,32 @@ function processUpdateResponse(data) {
     if (data.title !== undefined){
         jQuery("#pi-location-title").text(data.title)
     }
-    console.log(data);
 }
 
-function PIAmenityActivateSubsection(amenity){
-    console.log(amenity);
+function PIUpdateAmtFilter() {
+
+    let selectedAmenities = PIGetUserParam('selected_amenities');
+    if (selectedAmenities === null || selectedAmenities.length === 0) {
+        selectedAmenities = ['all'];
+    }
+
+    let obj = jQuery('#pi-amenity-table');
+    if (selectedAmenities.includes('all')) {
+        jQuery('.pi-amenity-button').removeClass('pi-amenity-button-active');
+        jQuery('.pi-amenity-button[data-amenity=all]').addClass('pi-amenity-button-active');
+        obj.find('tr').show();
+    }else{
+        jQuery('.pi-amenity-button[data-amenity=all]').removeClass('pi-amenity-button-active');
+        for(let amt in amenities) {
+            if (selectedAmenities.includes(amt)) {
+                jQuery(`.pi-amenity-button[data-amenity=${amt}]`).addClass('pi-amenity-button-active');
+                obj.find(`[data-amenity=${amt}]`).show();
+            }else{
+                jQuery(`.pi-amenity-button[data-amenity=${amt}]`).removeClass('pi-amenity-button-active');
+                obj.find(`[data-amenity=${amt}]`).hide();
+            }
+        }
+    }
 }
 
 map.on('load', () => {
@@ -178,7 +203,7 @@ map.on('load', () => {
         map.getCanvas().style.cursor = '';
     });
 
-    updateSectionMap();
+    PIUpdateSectionMap();
 });
 
 function amenityClick(e) {
@@ -198,7 +223,49 @@ function amenityClick(e) {
 
 jQuery(document).ready(function(){
 
+    PIUpdateAmtFilter();
+
     jQuery(document).on('click', '.pi-amenity-button', function(){
-        jQuery(this).addClass('pi-amenity-button-active');
+        let selectedAmenities = PIGetUserParam('selected_amenities');
+        if (selectedAmenities === null){
+            selectedAmenities = []
+        }
+
+        let obj = jQuery(this);
+        let amt = obj.data('amenity');
+
+        if (amt === 'all') {
+            selectedAmenities = ['all'];
+
+            if (obj.hasClass('pi-amenity-button-active')){
+                obj.removeClass('pi-amenity-button-active');
+            }else{
+                obj.addClass('pi-amenity-button-active');
+            }
+        }else{
+
+            if (obj.hasClass('pi-amenity-button-active')){
+                let idx = selectedAmenities.indexOf(amt);
+                if(idx>-1){
+                    selectedAmenities.splice(idx, 1);
+                }
+                obj.removeClass('pi-amenity-button-active');
+            }else{
+                let idx = selectedAmenities.indexOf(amt);
+                if(idx<0){
+                    selectedAmenities.push(amt);
+                }
+                obj.addClass('pi-amenity-button-active');
+
+                let indexAll = selectedAmenities.indexOf('all');
+                if (indexAll>-1){
+                    selectedAmenities.splice(indexAll, 1);
+                }
+            }
+        }
+
+
+        PIStoreUserSettings({'selected_amenities': selectedAmenities});
+        PIUpdateAmtFilter();
     })
 })

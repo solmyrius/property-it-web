@@ -1,5 +1,16 @@
 const mPerDegree = 111320;
 
+function PIGetUserParam(key) {
+
+    const currentData = PILoadUserSettings()
+
+    if(currentData[key] !== undefined){
+        return(currentData[key]);
+    }else{
+        return null;
+    }
+}
+
 function PIGetSelectedLocation(){
 
     const currentData = PILoadUserSettings()
@@ -44,7 +55,7 @@ function PIMapSelectPoint(e){
         'lat': e.lngLat.lat,
     });
 
-    updateSectionMap();
+    PIUpdateSectionMap();
 }
 
 function PIEmptyPointProcess() {

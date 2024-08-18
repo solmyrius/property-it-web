@@ -90,3 +90,16 @@ h1 {
     justify-content: center;
     padding: 8px;
 }
+#pi-amenity-table img {
+    width: 20px;
+}
+.pi-a-row{
+    display: flex;
+    align-items: center;
+}
+.pi-a-row-icon{
+    margin-right: 8px;
+}
+.pi-a-row-label{
+}
+

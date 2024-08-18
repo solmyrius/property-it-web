@@ -27,30 +27,50 @@ class DataAmenity:
 
     def query_point(self, point):
 
-        res = {}
+        res = {
+            'counts': {},
+            'rows': []
+        }
         cur = self.conn.cursor()
+        half_side = 3000  # meters
 
-        for amenity in self.amenity_types:
-
-            sql = f"""
+        sql = f"""
             SELECT amenity_id, amenity_type, name,
             ST_Distance(
                 point::geography,
-                ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography
+                ST_SetSRID(ST_MakePoint(%(center_lng)s, %(center_lat)s), 4326)::geography
             ) AS distance
+            FROM
+            
+            (SELECT *
             FROM prop_amenities
-            WHERE amenity_type = %s
-            ORDER BY distance
-            LIMIT 10;
-            """
-
-            cur.execute(sql, (point[0], point[1], amenity))
-            rows = cur.fetchall()
-            for row in rows:
-                row['distance_formatted'] = round_kmm(row['distance'])
-            res[amenity] = rows
-
+            WHERE ST_Contains(
+                ST_Transform(
+                    ST_SetSRID(
+                        ST_MakeEnvelope(
+                            %(center_lng)s - %(half_side)s * cos(radians(%(center_lat)s)) / 111319.9,
+                            %(center_lat)s - %(half_side)s / 111319.9,
+                            %(center_lng)s + %(half_side)s * cos(radians(%(center_lat)s)) / 111319.9,
+                            %(center_lat)s + %(half_side)s / 111319.9,
+                            4326
+                        ),
+                    4326),
+                4326),
+                point
+            )) as pre_fetch
+            ORDER BY distance;
+        """
+        cur.execute(sql, {'center_lng': point[0], 'center_lat': point[1], 'half_side': half_side})
+        rows = cur.fetchall()
         cur.close()
+
+        for row in rows:
+            row['distance_formatted'] = round_kmm(row['distance'])
+            res['rows'].append(row)
+            if row['amenity_type'] in res['counts']:
+                res['counts'][row['amenity_type']] += 1
+            else:
+                res['counts'][row['amenity_type']] = 1
 
         return res
 
@@ -60,18 +80,32 @@ class DataAmenity:
         address = gis.reverse_geocode(point)
 
         info = self.query_point(point)
-        amt_parts = []
-        for amenity in info:
-            amt_rows = []
-            for row in info[amenity]:
-                amt_rows.append(f"""<tr data-distance="{row['distance']}"><td>{row['name']}</td><td>{row['distance_formatted']}</td></tr>""")
-            amt_parts.append(f"""<table id="pi-amenity-table-{amenity}" class="pi-data-table pi-data-table-2">{''.join(amt_rows)}</table>""")
+        amt_rows = []
+        for row in info['rows']:
+            amt_icon = f"/static/images/amenities/{self.amenity_types[row['amenity_type']]['icon']}"
+            amt_name = row['name']
+            if amt_name is None:
+                amt_name = self.amenity_types[row['amenity_type']]['label']
+            amt_rows.append(f"""
+                <tr data-distance="{row['distance']}" data-amenity="{row['amenity_type']}">
+                    <td>
+                        <div class="pi-a-row">
+                            <span class="pi-a-row-icon">
+                                <img src="{amt_icon}" alt="Icon {amt_name}" />
+                            </span>
+                            <span class="pi-a-row-label">{amt_name}</span>
+                        </div>
+                    </td>
+                    <td>
+                        {row['distance_formatted']}
+                    </td>
+                </tr>""")
 
         return {
             "result": "success",
             "point": point,
             "title": address,
-            "html": ''.join(amt_parts)
+            "html": f"""<table id="pi-amenity-table" class="pi-data-table pi-data-table-2">{''.join(amt_rows)}</table>"""
         }
 
     def get_overview(self, point):
