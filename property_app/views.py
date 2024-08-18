@@ -46,7 +46,7 @@ def ui_section(request, section):
 
     location_placeholder = "all'indirizzo selezionato in Italia"
     context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
-    context['page_title'] = section_info['title'].replace('{placeholder}', '<span class="pi-location-title">'+location_placeholder+'</span>')
+    context['page_title'] = section_info['title'].replace('{placeholder}', '<span id="pi-location-title">'+location_placeholder+'</span>')
     context['section_content'] = '<div id="pi-section-placeholder"></div>'
 
     return render(request, 'page.html', context)

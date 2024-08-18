@@ -90,6 +90,10 @@ function processUpdateResponse(data) {
     }else{
         jQuery("#pi-section-placeholder").html('');
     }
+
+    if (data.title !== undefined){
+        jQuery("#pi-location-title").text(data.title)
+    }
     console.log(data);
 }
 

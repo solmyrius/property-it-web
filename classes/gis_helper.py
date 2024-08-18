@@ -17,6 +17,7 @@ class GisHelper:
 
         params = {
             'access_token': self.mapbox_key,
+            'language': 'it-IT',
             'limit': 1
         }
 
