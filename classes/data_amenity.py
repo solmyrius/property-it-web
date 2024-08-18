@@ -11,6 +11,20 @@ class DataAmenity:
             self.amenity_types = json.load(f)
         self.conn = pdb_conn()
 
+    def get_buttons(self):
+        buttons = [self.make_button('all')]
+        for amt in self.amenity_types:
+            if amt != 'all':
+                buttons.append(self.make_button(amt))
+        return buttons
+
+    def make_button(self, amt):
+        return {
+            'amenity': amt,
+            'label': self.amenity_types[amt]['label'],
+            'icon': self.amenity_types[amt]['icon'],
+        }
+
     def query_point(self, point):
 
         res = {}

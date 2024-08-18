@@ -1,19 +1,11 @@
     <div class="scrollable-content">
         <h1>{{page_title|safe}}</h1>
         <div class="amenity-buttons-grid">
-            <button class="amenity-button" data-amenity="allamenities">All</button>
-            <button class="amenity-button" data-amenity="supermarket">Supermarkets</button>
-            <button class="amenity-button" data-amenity="store">Convenience</button>
-            <button class="amenity-button" data-amenity="cafe">Cafes</button>
-            <button class="amenity-button" data-amenity="restaurant">Restaurants</button>
-            <button class="amenity-button" data-amenity="medical">Medical</button>
-            <button class="amenity-button" data-amenity="pub">Bars/pubs</button>
-            <button class="amenity-button" data-amenity="sport">Fitness</button>
-            <button class="amenity-button" data-amenity="park">Green space</button>
-        </div>
-
-        <div class="icon-container">
-            <img id="amenity-icon" src="" alt="Selected Amenity Icon">
+            {% for item in amenities_buttons %}
+                <button class="pi-amenity-button" data-amenity="{{item.amenity}}">
+                    <span class="pi-ab-icon"><img src="/static/images/amenities/{{item.icon}}" alt="Icon {{item.label}}" /></span>
+                    <span class="pi-ab-label">{{item.label}}</span></button>
+            {% endfor %}
         </div>
     </div>
     <div class="pi-data-section">

@@ -5,6 +5,9 @@ body, html {
     overflow: hidden;
     font-family: 'Arial', sans-serif;
 }
+h1 {
+    font-size: 30px;
+}
 #pi-container {
     display: flex;
     flex-direction: column;
@@ -40,7 +43,7 @@ body, html {
     height: calc(100vh - 140px);
     box-sizing: border-box;
 }
-.pi-location-title{
+#pi-location-title{
     color: #0cc1b0;
 }
 .pi-data-table{
@@ -54,4 +57,36 @@ body, html {
 }
 .pi-data-table-2 td{
     width: 50%;
+}
+.pi-amenity-button {
+    width: 100%;
+    box-sizing: border-box;
+    height: 33px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+}
+.pi-amenity-button-active{
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-color: #e9fbff;
+}
+.pi-amenity-button img{
+    width: 20px;
+    padding-right: 8px;
+}
+.pi-ab-icon{
+    line-height: 13px;
+    display: flex;
+    width: 28px;
+}
+.pi-ab-label{
+    line-height: 13px;
+    text-align: center;
+    flex-grow: 1;
+    margin-left: -28px;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
 }

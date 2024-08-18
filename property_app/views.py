@@ -44,6 +44,11 @@ def ui_section(request, section):
         if ss['section'] == section:
             section_info = ss
 
+    if section == 'amenities':
+        from classes.data_amenity import DataAmenity
+        data_class = DataAmenity()
+        context['amenities_buttons'] = data_class.get_buttons()
+
     location_placeholder = "all'indirizzo selezionato in Italia"
     context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
     context['page_title'] = section_info['title'].replace('{placeholder}', '<span id="pi-location-title">'+location_placeholder+'</span>')

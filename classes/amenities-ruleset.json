@@ -8,6 +8,7 @@
         ]
       }
     ],
+    "icon": "supermart.svg",
     "label": "Supermarket",
     "label_en": "Supermarket"
   },
@@ -29,6 +30,7 @@
         ]
       }
     ],
+    "icon": "store-bag.svg",
     "label": "Store"
   },
   "restaurant": {
@@ -43,6 +45,7 @@
         ]
       }
     ],
+    "icon": "cocktail.svg",
     "label": "Restaurant"
   },
   "cafe": {
@@ -54,6 +57,7 @@
         ]
       }
     ],
+    "icon": "cup.svg",
     "label": "Cafe"
   },
   "doctor": {
@@ -67,6 +71,7 @@
         ]
       }
     ],
+    "icon": "doctor.svg",
     "label": "Medical"
   },
   "pub": {
@@ -81,6 +86,7 @@
         ]
       }
     ],
+    "icon": "pub.svg",
     "label": "Pub"
   },
   "park": {
@@ -102,6 +108,7 @@
         ]
       }
     ],
+    "icon": "tree-fill.svg",
     "label": "Park"
   },
   "pharmacy": {
@@ -113,7 +120,8 @@
         ]
       }
     ],
-    "label": "Park"
+    "icon": "pharma.svg",
+    "label": "Pharmacy"
   },
   "sport": {
     "rules": [
@@ -137,6 +145,12 @@
         ]
       }
     ],
+    "icon": "gym.svg",
     "label": "Sport/Gym"
+  },
+  "all": {
+    "icon": "map-pin.svg",
+    "label": "All",
+    "label_en": "All"
   }
 }

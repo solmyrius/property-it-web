@@ -195,3 +195,10 @@ function amenityClick(e) {
         .setHTML(name)
         .addTo(map);
 }
+
+jQuery(document).ready(function(){
+
+    jQuery(document).on('click', '.pi-amenity-button', function(){
+        jQuery(this).addClass('pi-amenity-button-active');
+    })
+})
