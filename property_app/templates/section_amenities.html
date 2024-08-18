@@ -1,5 +1,5 @@
     <div class="scrollable-content">
-        <h2>Amenities for the area near <span class="blue-text" id="ph-point-name"> 'enter or select an address'</span></h2>
+        <h2>{{page_title|safe}}</h2>
         <div class="amenity-buttons-grid">
             <button class="amenity-button" data-amenity="allamenities">All</button>
             <button class="amenity-button" data-amenity="supermarket">Supermarkets</button>
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="pi-data-section">
-        <div id="pi-section-placeholder"></div>
+        {{section_content|safe}}
         <div class="additional-text">
             <p class="credits">Data source: OpenStreetMap</p>
         </div>

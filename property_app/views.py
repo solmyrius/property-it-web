@@ -13,7 +13,7 @@ def ui_section(request, section):
     map_template = f"section_{section}.html"
     map_script_url = f"/static/{section}.js"
 
-    top_menu = [
+    section_rules = [
         {
             'section': 'overview',
             'anchor': 'Overview',
@@ -21,6 +21,7 @@ def ui_section(request, section):
         },
         {
             'section': 'amenities',
+            'title': 'Servizi locali vicino a {placeholder}',
             'anchor': 'Amenities',
             'href': '/amenities'
         }
@@ -33,10 +34,21 @@ def ui_section(request, section):
         'sub_template': 'page_map.html',
         'map_template': map_template,
         'map_script_url': map_script_url,
-        'top_menu': top_menu,
+        'top_menu': section_rules,
         'active_menu': active_menu,
         'section': section
     }
+
+    section_info = {}
+    for ss in section_rules:
+        if ss['section'] == section:
+            section_info = ss
+
+    location_placeholder = "all'indirizzo selezionato in Italia"
+    context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
+    context['page_title'] = section_info['title'].replace('{placeholder}', '<span class="pi-location-title">'+location_placeholder+'</span>')
+    context['section_content'] = '<div id="pi-section-placeholder"></div>'
+
     return render(request, 'page.html', context)
 
 

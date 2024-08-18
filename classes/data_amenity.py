@@ -50,8 +50,8 @@ class DataAmenity:
         for amenity in info:
             amt_rows = []
             for row in info[amenity]:
-                amt_rows.append(f"<tr><td>{row['name']}</td><td>{row['distance_formatted']}</td></tr>")
-            amt_parts.append(f"""<table id="pi-amenity-table-{amenity}">{''.join(amt_rows)}</table>""")
+                amt_rows.append(f"""<tr data-distance="{row['distance']}"><td>{row['name']}</td><td>{row['distance_formatted']}</td></tr>""")
+            amt_parts.append(f"""<table id="pi-amenity-table-{amenity}" class="pi-data-table pi-data-table-2">{''.join(amt_rows)}</table>""")
 
         return {
             "result": "success",

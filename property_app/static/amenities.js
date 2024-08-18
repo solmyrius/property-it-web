@@ -64,7 +64,10 @@ function updateSectionMap(){
 
     if (loc === null) {
         PIEmptyPointProcess();
+        return;
     }
+
+    PIActivateCircles([loc.lng, loc.lat], [3000]);
 
     jQuery.post({
         url: '/api/amenities',
@@ -170,6 +173,8 @@ map.on('load', () => {
     map.on('mouseleave', 'am-point', (e) => {
         map.getCanvas().style.cursor = '';
     });
+
+    updateSectionMap();
 });
 
 function amenityClick(e) {
@@ -186,19 +191,3 @@ function amenityClick(e) {
         .setHTML(name)
         .addTo(map);
 }
-
-jQuery(document).ready(function(){
-
-    jQuery.post({
-        url: '/api/amenities',
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            'point': [0, 0]
-        }),
-        success: function (data) {
-
-            console.log(data);
-        }
-    });
-})

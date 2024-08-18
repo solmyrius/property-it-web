@@ -11,7 +11,7 @@ RUN pip install --upgrade pip
 RUN pip install -r /home/property-web/requirements.txt
 
 COPY classes /home/property-web/classes/
-COPY auth_app /home/property-web/auth_app/
+COPY all_auth /home/property-web/all_auth/
 COPY property_project /home/property-web/property_project/
 COPY property_app /home/property-web/property_app/
 
