@@ -71,7 +71,7 @@ function PIUpdateSectionMap(){
         return;
     }
 
-    PIActivateCircles([loc.lng, loc.lat], [3000]);
+    PIActivateCircles([loc.lng, loc.lat], [500]);
 
     jQuery.post({
         url: '/api/amenities',

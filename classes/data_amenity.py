@@ -32,7 +32,7 @@ class DataAmenity:
             'rows': []
         }
         cur = self.conn.cursor()
-        half_side = 3000  # meters
+        half_side = 500  # meters
 
         sql = f"""
             SELECT amenity_id, amenity_type, name,
