@@ -124,6 +124,33 @@ function PIUpdateAmtFilter() {
             }
         }
     }
+
+    if (map.loaded()){
+        PIUpdateMapFilter();
+    }else{
+        map.once('idle', PIUpdateMapFilter);
+    }
+}
+
+function PIUpdateMapFilter(){
+    let selectedAmenities = PIGetUserParam('selected_amenities');
+    if (selectedAmenities === null || selectedAmenities.length === 0) {
+        selectedAmenities = ['all'];
+    }
+
+    if (selectedAmenities.includes('all')) {
+
+        map.setFilter('am-point', null);
+        map.setLayoutProperty("am-point", "icon-allow-overlap", false);
+    }else{
+
+        map.setFilter('am-point', ['in', 'amenity_type', ...selectedAmenities]);
+        if (selectedAmenities.length === 1) {
+            map.setLayoutProperty("am-point", "icon-allow-overlap", true);
+        }else{
+            map.setLayoutProperty("am-point", "icon-allow-overlap", false);
+        }
+    }
 }
 
 map.on('load', () => {
@@ -149,7 +176,7 @@ map.on('load', () => {
     map.addLayer({
         id: 'am-point',
         type: 'symbol',
-        'minzoom': 8,
+        minzoom: 8,
         source: 'amenities',
         'source-layer': 'prop_amenities',
         layout: {
@@ -170,8 +197,10 @@ map.on('load', () => {
                 'image-park',
                 'sport',
                 'image-sport',
-                'medical',
-                'image-medical',
+                'doctor',
+                'image-doctor',
+                'pharmacy',
+                'image-pharmacy',
                 /* using supermarket image for default icon, since Mapbox requires something for default */
                 'image-supermarket'
             ],
@@ -226,6 +255,7 @@ jQuery(document).ready(function(){
     PIUpdateAmtFilter();
 
     jQuery(document).on('click', '.pi-amenity-button', function(){
+
         let selectedAmenities = PIGetUserParam('selected_amenities');
         if (selectedAmenities === null){
             selectedAmenities = []
@@ -263,7 +293,6 @@ jQuery(document).ready(function(){
                 }
             }
         }
-
 
         PIStoreUserSettings({'selected_amenities': selectedAmenities});
         PIUpdateAmtFilter();
