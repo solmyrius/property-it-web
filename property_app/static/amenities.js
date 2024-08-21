@@ -140,16 +140,22 @@ function PIUpdateMapFilter(){
 
     if (selectedAmenities.includes('all')) {
 
-        map.setFilter('am-point', null);
-        map.setLayoutProperty("am-point", "icon-allow-overlap", false);
+        map.setFilter('amenity-marker', null);
+        map.setLayoutProperty("amenity-marker", "icon-allow-overlap", false);
     }else{
 
-        map.setFilter('am-point', ['in', 'amenity_type', ...selectedAmenities]);
+        map.setFilter('amenity-marker', ['in', 'amenity_type', ...selectedAmenities]);
         if (selectedAmenities.length === 1) {
-            map.setLayoutProperty("am-point", "icon-allow-overlap", true);
+            map.setLayoutProperty("amenity-marker", "icon-allow-overlap", true);
         }else{
-            map.setLayoutProperty("am-point", "icon-allow-overlap", false);
+            map.setLayoutProperty("amenity-marker", "icon-allow-overlap", false);
         }
+    }
+}
+
+function PISectionMapClick(e) {
+    if (map.queryRenderedFeatures(e.point).filter(feature => feature.source === 'amenities').length === 0) {
+        PIMapSelectPoint([e.lngLat.lng, e.lngLat.lat]);
     }
 }
 
@@ -174,7 +180,7 @@ map.on('load', () => {
     );
 
     map.addLayer({
-        id: 'am-point',
+        id: 'amenity-marker',
         type: 'symbol',
         minzoom: 8,
         source: 'amenities',
@@ -223,12 +229,11 @@ map.on('load', () => {
         }
     });
 
-    map.on('click', 'am-point', amenityClick);
-    map.on('mouseenter', 'am-point', (e) => {
+    map.on('click', 'amenity-marker', amenityClick);
+    map.on('mouseenter', 'amenity-marker', (e) => {
         map.getCanvas().style.cursor = 'pointer';
     });
-
-    map.on('mouseleave', 'am-point', (e) => {
+    map.on('mouseleave', 'amenity-marker', (e) => {
         map.getCanvas().style.cursor = '';
     });
 

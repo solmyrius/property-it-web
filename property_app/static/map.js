@@ -48,11 +48,11 @@ function PIStoreSelectedLocation(location){
     })
 }
 
-function PIMapSelectPoint(e){
+function PIMapSelectPoint(point){
 
     PIStoreSelectedLocation({
-        'lng': e.lngLat.lng,
-        'lat': e.lngLat.lat,
+        'lng': point[0],
+        'lat': point[1],
     });
 
     PIUpdateSectionMap();
@@ -133,4 +133,6 @@ function PIActivateCircles(center, radii){
     map.fitBounds([northwest, southeast], {padding: 40});
 }
 
-map.on('click', PIMapSelectPoint);
+map.on('load', () => {
+    map.on('click', PISectionMapClick);  // Should process click on blank map only
+})
