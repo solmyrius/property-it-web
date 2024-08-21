@@ -20,6 +20,12 @@ def ui_section(request, section):
             'href': '/overview'
         },
         {
+            'section': 'demography',
+            'title': "Profilo demografico dell'area vicino a {placeholder}",
+            'anchor': 'Demography',
+            'href': '/demography'
+        },
+        {
             'section': 'amenities',
             'title': 'Servizi locali vicino a {placeholder}',
             'anchor': 'Amenities',
@@ -48,6 +54,9 @@ def ui_section(request, section):
         from classes.data_amenity import DataAmenity
         data_class = DataAmenity()
         context['amenities_buttons'] = data_class.get_buttons()
+    if section == 'demography':
+        from classes.data_demography import DataDemography
+        data_class = DataDemography()
 
     location_placeholder = "all'indirizzo selezionato in Italia"
     context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
@@ -70,6 +79,9 @@ def api_section(request, section):
         if section == 'amenities':
             from classes.data_amenity import DataAmenity
             data_class = DataAmenity()
+        if section == 'demography':
+            from classes.data_demography import DataDemography
+            data_class = DataDemography()
 
         if data_class is not None:
             return JsonResponse(data_class.get_section_data(data['point']))

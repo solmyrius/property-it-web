@@ -1,0 +1,76 @@
+{
+  "ALL": {
+    "id": "ALL",
+    "label_en": "total",
+    "label_it": "totale",
+    "aggregated": true
+  },
+  "LSE": {
+    "id": "LSE",
+    "label_en": "diploma of lower secondary education",
+    "label_it": "licenza di scuola media inferiore o di avviamento professionale",
+    "weight": 10,
+    "aggregated": false
+  },
+  "BL": {
+    "id": "BL",
+    "label_en": "bachelor's degree or first level academic diploma; Diploma of Higher Technical; University Diploma",
+    "label_it": "diploma di tecnico superiore ITS o titolo di studio terziario di primo livello",
+    "weight": 13,
+    "aggregated": false
+  },
+  "NED": {
+    "id": "NED",
+    "label_en": "no educational degree",
+    "label_it": "nessun titolo di studio",
+    "aggregated": true
+  },
+  "RDD": {
+    "id": "RDD",
+    "label_en": "Research Doctorate (PhD)/ Advanced research academic diploma",
+    "label_it": "dottorato di ricerca/diploma accademico di formazione alla ricerca",
+    "weight": 20,
+    "aggregated": false
+  },
+  "ML": {
+    "id": "ML",
+    "label_en": "master's degree or second level academic diploma (and Academy Conservatory old programme)",
+    "label_it": "titolo di studio terziario di secondo livello",
+    "weight": 16,
+    "aggregated": false
+  },
+  "ML_RDD": {
+    "id": "ML_RDD",
+    "label_en": "master's degree or second level academic diploma and Research Doctorate (PhD)",
+    "label_it": "titolo di studio terziario di secondo livello e dottorato di ricerca",
+    "aggregated": true
+  },
+  "PSE": {
+    "id": "PSE",
+    "label_en": "final assessment (primary school)",
+    "label_it": "licenza di scuola media inferiore o di avviamento professionale",
+    "weight": 4,
+    "aggregated": false
+  },
+  "LBNA": {
+    "id": "LBNA",
+    "label_en": "literate but no formal educational attainment",
+    "label_it": "alfabeti privi di titolo di studio",
+    "weight": 0,
+    "aggregated": false
+  },
+  "USE_IF": {
+    "id": "USE_IF",
+    "label_en": "diploma of upper secondary education and Certification of higher technical specialisation",
+    "label_it": "diploma di istruzione secondaria di II grado o di qualifica professionale (corso di 3-4 anni) compresi IFTS",
+    "aggregated": false,
+    "weight": 12
+  },
+  "IL": {
+    "id": "IL",
+    "label_en": "illiterate",
+    "label_it": "analfabeti",
+    "aggregated": false,
+    "weight": 0
+  }
+}
