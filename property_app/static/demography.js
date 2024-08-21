@@ -1,7 +1,60 @@
 var hoveredStateId = null;
 
-function PIUpdateSectionMap() {
+function PIProcessUpdateResponse(data) {
 
+    console.log(data);
+}
+
+function PIUpdateSectionMap() {
+    let loc = PIGetSelectedLocation();
+
+    if (loc === null) {
+        PIEmptyPointProcess();
+        return;
+    }
+
+    const point = [loc.lng, loc.lat]
+    map.once('idle', function (){
+        const screen_point = map.project(point);
+        const screen_features = map.queryRenderedFeatures(
+            screen_point,
+            {
+                layers: ['commune']
+            }
+        );
+
+        PINavigateArea(point, screen_features[0].geometry)
+    })
+
+    jQuery.post({
+        url: '/api/demography',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            'point': point
+        }),
+        success: function (data) {
+            PIProcessUpdateResponseDemography(data);
+        }
+    });
+}
+
+function PIProcessUpdateResponseDemography(data) {
+
+    if (data.html !== undefined){
+        jQuery("#pi-section-placeholder").html(data.html);
+    }else{
+        jQuery("#pi-section-placeholder").html('');
+    }
+
+    if (data.title !== undefined){
+        jQuery("#pi-location-title").text(data.title)
+    }
+}
+
+function PISectionMapClick(e) {
+
+    PIMapSelectPoint([e.lngLat.lng, e.lngLat.lat]);
 }
 
 map.on('load', () => {
@@ -23,7 +76,7 @@ map.on('load', () => {
         paint: {
             'fill-color': [
                 'case',
-                ['boolean', ['feature-state', 'selected'], false],
+                ['boolean', ['feature-state', 'hover'], false],
                 '#3bb2d0',
                 [
                     "step",
@@ -127,4 +180,6 @@ map.on('load', () => {
                 .addTo(map);
         }
     });
+
+    PIUpdateSectionMap();
 });

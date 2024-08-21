@@ -4,20 +4,20 @@ function PIGetUserParam(key) {
 
     const currentData = PILoadUserSettings()
 
-    if(currentData[key] !== undefined){
-        return(currentData[key]);
-    }else{
+    if (currentData[key] !== undefined) {
+        return (currentData[key]);
+    } else {
         return null;
     }
 }
 
-function PIGetSelectedLocation(){
+function PIGetSelectedLocation() {
 
     const currentData = PILoadUserSettings()
 
-    if(currentData.currentLocation !== undefined){
-        return(currentData.currentLocation);
-    }else{
+    if (currentData.currentLocation !== undefined) {
+        return (currentData.currentLocation);
+    } else {
         return null;
     }
 }
@@ -34,21 +34,21 @@ function PILoadUserSettings() {
 function PIStoreUserSettings(data) {
 
     let currentData = PILoadUserSettings();
-    for(let i in data){
+    for (let i in data) {
         currentData[i] = data[i];
     }
 
     localStorage.setItem("pi_data", JSON.stringify(currentData));
 }
 
-function PIStoreSelectedLocation(location){
+function PIStoreSelectedLocation(location) {
 
     PIStoreUserSettings({
         'currentLocation': location
     })
 }
 
-function PIMapSelectPoint(point){
+function PIMapSelectPoint(point) {
 
     PIStoreSelectedLocation({
         'lng': point[0],
@@ -63,7 +63,7 @@ function PIEmptyPointProcess() {
     console.log("Point is empty");
 }
 
-function PICalculateCirclePoints(center, radiusInM, points=32) {
+function PICalculateCirclePoints(center, radiusInM, points = 32) {
     const coords = {
         latitude: center[1],
         longitude: center[0]
@@ -79,7 +79,91 @@ function PICalculateCirclePoints(center, radiusInM, points=32) {
     return ring;
 }
 
-function PIActivateCircles(center, radii){
+function PINavigateCircles(center, radii) {
+    PIActivatePoint(center);
+    PIActivateCircles(center, radii);
+
+    let maxR = Math.max(radii);
+
+    const earthRadius = 6378137;
+
+    const offsetLat = (maxR / earthRadius) * (180 / Math.PI);
+    const offsetLng = (maxR / earthRadius) * (180 / Math.PI) / Math.cos(center[1] * Math.PI / 180);
+
+    const northwest = [center[0] - offsetLng, center[1] + offsetLat];
+    const southeast = [center[0] + offsetLng, center[1] - offsetLat];
+
+    map.fitBounds([northwest, southeast], {padding: 40});
+}
+
+function PINavigateArea(center, polygon) {
+    PIActivatePoint(center);
+
+    console.log(polygon);
+    let lngs = [];
+    let lats = [];
+    if(polygon.type.toLowerCase()==='polygon'){
+        lngs = polygon.coordinates[0].map(point => point[0]);
+        lats = polygon.coordinates[0].map(point => point[1]);
+    }else if (polygon.type.toLowerCase()==='multipolygon') {
+        lngs = polygon.coordinates[0][0].map(point => point[0]);
+        lats = polygon.coordinates[0][0].map(point => point[1]);
+    }
+
+    const minLat = Math.min(...lats);
+    const maxLat = Math.max(...lats);
+    const minLng = Math.min(...lngs);
+    const maxLng = Math.max(...lngs);
+    let bounds = [[minLng, minLat], [maxLng, maxLat]];
+
+    let w = bounds[1][0] - bounds[0][0];
+    let h = bounds[1][1] - bounds[0][1];
+    let b2 = [[bounds[0][0] - w/2, bounds[0][1] - h/2], [bounds[1][0] + w/2, bounds[1][1] + h/2]];
+    map.fitBounds(b2, {padding: 40});
+}
+
+function PIActivatePoint(center) {
+    const pointSource =
+        {
+            type: "FeatureCollection",
+            features: [
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: center
+                    }
+                }
+            ]
+        };
+    if (map.getSource('point-marker')) {
+        map.getSource('point-marker').setData(pointSource);
+    } else {
+        map.addSource('point-marker', {
+            type: 'geojson',
+            data: pointSource
+        });
+    }
+
+    if (map.getLayer('point-marker')) {
+        // nope
+    } else {
+        map.addLayer({
+            id: 'point-marker',
+            type: 'circle',
+            source: 'point-marker',
+            layout: {},
+            paint: {
+                'circle-color': 'crimson',
+                'circle-radius': 6,
+                'circle-stroke-width': 1,
+                'circle-stroke-color': '#000'
+            }
+        });
+    }
+}
+
+function PIActivateCircles(center, radii) {
 
     let sourceFeatures = {
         type: "FeatureCollection",
@@ -96,10 +180,10 @@ function PIActivateCircles(center, radii){
         })
     }
 
-    if (map.getSource('point-marker')) {
-        map.getSource('point-marker').setData(sourceFeatures);
+    if (map.getSource('point-marker-circles')) {
+        map.getSource('point-marker-circles').setData(sourceFeatures);
     } else {
-        map.addSource('point-marker', {
+        map.addSource('point-marker-circles', {
             type: 'geojson',
             data: sourceFeatures
         });
@@ -111,7 +195,7 @@ function PIActivateCircles(center, radii){
         map.addLayer({
             id: 'point-marker-line',
             type: 'line',
-            source: 'point-marker',
+            source: 'point-marker-circles',
             layout: {},
             paint: {
                 'line-color': 'navy',
@@ -119,18 +203,6 @@ function PIActivateCircles(center, radii){
             }
         });
     }
-
-    let maxR = Math.max(radii);
-
-    const earthRadius = 6378137;
-
-    const offsetLat = (maxR / earthRadius) * (180 / Math.PI);
-    const offsetLng = (maxR / earthRadius) * (180 / Math.PI) / Math.cos(center[1]* Math.PI / 180);
-
-    const northwest = [center[0] - offsetLng, center[1] + offsetLat];
-    const southeast = [center[0] + offsetLng, center[1] - offsetLat];
-
-    map.fitBounds([northwest, southeast], {padding: 40});
 }
 
 map.on('load', () => {

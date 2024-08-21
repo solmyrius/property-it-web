@@ -40,10 +40,16 @@ class DataDemography:
         info = self.query_point(point)
         data_rows = [f"""<tr><th>Education</th><th>Peoples</th><th>%</th></tr>"""]
         for key in ['IL', 'LBNA', 'PSE', 'LSE', 'USE_IF', 'BL', 'ML', 'RDD']:
+            table_key = "edu_"+key.lower()
+            n = info[table_key]
+            p = round(100*n/info['edu_all'], 1)
+            label = self.education_rules[key]['label_it']
+            label = label[0:1].upper()+label[1:]
+
             data_rows.append(f"""<tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{label}</td>
+            <td>{n}</td>
+            <td>{p}</td>
             </tr>""")
 
         return {

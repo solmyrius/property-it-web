@@ -71,7 +71,7 @@ function PIUpdateSectionMap(){
         return;
     }
 
-    PIActivateCircles([loc.lng, loc.lat], [500]);
+    PINavigateCircles([loc.lng, loc.lat], [500]);
 
     jQuery.post({
         url: '/api/amenities',
@@ -81,12 +81,12 @@ function PIUpdateSectionMap(){
             'point': [loc.lng, loc.lat]
         }),
         success: function (data) {
-            PIProcessUpdateResponse(data);
+            PIProcessUpdateResponseAmenities(data);
         }
     });
 }
 
-function PIProcessUpdateResponse(data) {
+function PIProcessUpdateResponseAmenities(data) {
 
     if (data.html !== undefined){
         jQuery("#pi-section-placeholder").html(data.html);
