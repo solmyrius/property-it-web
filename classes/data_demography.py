@@ -4,6 +4,25 @@ from classes.helper import round_two_digits
 from classes.gis_helper import GisHelper
 from classes.pgconn import pdb_conn
 
+"""
+Quantiles:
+education
+[9.49, 9.72, 9.89, 10.02, 10.15, 10.3, 10.5]
+
+institutional population:
+[0.0, 0.0, 0.031, 0.174, 0.36, 0.6355, 1.136]
+
+unoccupied dwellings:
+[15.32625, 20.87, 27.22, 34.435, 42.7, 51.4375, 62.96]
+
+homeless
+[0.18, 0.31, 0.47, 0.66, 0.94, 1.4725, 2.7]
+
+camp dwellers
+no sense since only part of communes have such
+[0.14625, 0.34, 0.57, 1.005, 1.6624999999999999, 2.685, 4.42875] 
+"""
+
 
 class DataDemography:
     def __init__(self):
