@@ -1,8 +1,67 @@
 var hoveredStateId = null;
 
-function PIProcessUpdateResponse(data) {
+const demoLayers = {
+    "education": {
+        "index": "edu_idx",
+        "percentiles":[9.49, 9.72, 9.89, 10.02, 10.15, 10.3, 10.5]
+    } ,
+    "institutional": {
+        "index": "hh_idx",
+        "percentiles":[0.0, 0.0001, 0.031, 0.174, 0.36, 0.6355, 1.136]
+    },
+    "unoccupied": {
+        "index": "dwell_idx",
+        "percentiles":[15.32625, 20.87, 27.22, 34.435, 42.7, 51.4375, 62.96]
+    },
+    "homeless": {
+        "index": "hless_idx",
+        "percentiles":[0.18, 0.31, 0.47, 0.66, 0.94, 1.4725, 2.7]
+    },
+    "camp": {
+        "index": "camp_idx",
+        "percentiles":[0.14625, 0.34, 0.57, 1.005, 1.6624999999999999, 2.685, 4.42875]
+    },
+}
 
-    console.log(data);
+const palette = ["#ff0000", "#ff4500", "#ff8c00", "#ffd700", "#ffff00", "#ccff00", "#7fff00", "#00ff00"];
+
+function PIActivateDemoSection(section){
+
+    jQuery(".pi-dc").removeClass('pi-dc-active');
+    jQuery(`[data-demography=${section}]`).addClass('pi-dc-active');
+
+    if (demoLayers[section] !== undefined){
+
+        let colors = palette;
+        if (section !== 'education'){
+            colors = palette.slice().reverse();
+        }
+
+        let colorRule = [
+            "step",
+            ["to-number", ["get", demoLayers[section]["index"]]]
+        ]
+        for (i=0; i<8; i++){
+            colorRule.push(colors[i]);
+            if (i<7){
+                colorRule.push(demoLayers[section]["percentiles"][i])
+            }
+        }
+
+        let fillColor = [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            '#3bb2d0',
+            [
+                'case',
+                ['boolean', ['feature-state', 'selected'], false],
+                '#000000',
+                colorRule
+            ]
+        ];
+        map.setPaintProperty('commune', 'fill-color', fillColor);
+    }
+    console.log(section);
 }
 
 function PIUpdateSectionMap() {
@@ -62,7 +121,7 @@ map.on('load', () => {
     map.addSource('census-commune',
         {
             type: 'vector',
-            url: 'https://property.puzyrkov.com/tiles/fn_census',
+            url: 'https://property.puzyrkov.com/tiles/prop_census_commune_map',
             promoteId: 'commune_id'
         }
     );
@@ -72,41 +131,24 @@ map.on('load', () => {
         type: 'fill',
         minzoom: 3,
         source: 'census-commune',
-        'source-layer': 'fn_census',
+        'source-layer': 'prop_census_commune_map',
         paint: {
             'fill-color': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
                 '#3bb2d0',
-                [
-                    "step",
-                    ["to-number", ["get", "edu_idx"]],
-                    "#FFC0CB",
-                    9.49,
-                    "#D4AAB2",
-                    9.72,
-                    "#AA9599",
-                    9.89,
-                    "#808080",
-                    10.02,
-                    "#55AA55",
-                    10.15,
-                    "#6DE457",
-                    10.3,
-                    "#24F61D",
-                    10.5,
-                    "#00FF00"
-                ]
+                '#ffffff'
             ],
             'fill-opacity': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
                 0.75,       // Highlight opacity
                 0.5         // Default opacity
-            ],
-            'fill-outline-color': 'navy'
+            ]
         }
     });
+
+    PIActivateDemoSection('education');
 
     map.addSource('selected-point', {
         type: 'geojson',
@@ -131,13 +173,13 @@ map.on('load', () => {
         if (e.features.length > 0) {
             if (hoveredStateId !== null) {
                 map.setFeatureState(
-                    {source: 'census-commune', sourceLayer: 'fn_census', id: hoveredStateId},
+                    {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: hoveredStateId},
                     {hover: false}
                 );
             }
             hoveredStateId = e.features[0].id;
             map.setFeatureState(
-                {source: 'census-commune', sourceLayer: 'fn_census', id: hoveredStateId},
+                {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: hoveredStateId},
                 {hover: true}
             );
         }
@@ -148,7 +190,7 @@ map.on('load', () => {
 
         if (hoveredStateId !== null) {
             map.setFeatureState(
-                {source: 'census-commune', sourceLayer: 'fn_census', id: hoveredStateId},
+                {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: hoveredStateId},
                 {hover: false}
             );
             hoveredStateId = null;
@@ -183,3 +225,11 @@ map.on('load', () => {
 
     PIUpdateSectionMap();
 });
+
+jQuery(document).ready(function(){
+
+    jQuery(document).on('click', '.pi-dc', function(){
+
+        PIActivateDemoSection(jQuery(this).data('demography'));
+    })
+})
