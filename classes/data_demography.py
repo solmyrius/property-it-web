@@ -112,7 +112,7 @@ class DataDemography:
         ),
         IntersectedGeoms AS (
             SELECT 
-                cs.commune_id, 
+                cs.commune_id, cs.name,
                 cs.geom
             FROM prop_census_commune cs
             INNER JOIN SelectedShape ss ON ST_Intersects(cs.geom, ss.buffered_geom)
@@ -123,7 +123,7 @@ class DataDemography:
             FROM IntersectedGeoms
         )
         SELECT 
-            ig.commune_id, 
+            ig.commune_id, ig.name,
             cse.*,
             csd.dwell_total, csd.dwell_idx,
             cshl.hless_total, cshl.hless_idx,
@@ -169,7 +169,7 @@ class DataDemography:
         print(info, flush=True)
 
         data_rows = [
-            f"""<tr><th>Education</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Education</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Overall Education Index</td>           
                 <td class="pi-dt-number">{info['edu_idx']}</td>
@@ -195,7 +195,7 @@ class DataDemography:
 
         nearby_dwell = self.nearby_average(nearby_info, ['dwell_idx'], 'dwell_total')
         data_rows = [
-            f"""<tr><th>Dwellings</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Dwellings</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Unoccupied dwellings index</td>           
                 <td class="pi-dt-number">{info['dwell_idx']}%</td>
@@ -214,7 +214,7 @@ class DataDemography:
         nearby_populi = self.nearby_average(nearby_info, ['hless_idx', 'hless_total', 'camp_idx', 'camp_total', 'hh_idx', 'hh_inst_respop', 'hh_avg_dw'], 'hh_respop')
 
         data_rows = [
-            f"""<tr><th>Homeless</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Homeless</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Homeless index</td>           
                 <td class="pi-dt-number">{info['hless_idx']}%</td>
@@ -232,7 +232,7 @@ class DataDemography:
         """ Camps """
 
         data_rows = [
-            f"""<tr><th>Camps dwellers</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Camps dwellers</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Camp dweller index</td>           
                 <td class="pi-dt-number">{info['camp_idx']}%</td>
@@ -250,7 +250,7 @@ class DataDemography:
         """ Institutional """
 
         data_rows = [
-            f"""<tr><th>Institutional dwellings</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Institutional dwellings</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Institutional dweller index</td>           
                 <td class="pi-dt-number">{info['hh_idx']}%</td>
@@ -275,7 +275,7 @@ class DataDemography:
         """ Combined """
 
         data_rows = [
-            f"""<tr><th>Demography index</th><th>Selected region</th><th>Nearby regions</th></tr>""",
+            f"""<tr><th>Demography index</th><th>Comune selezionato {info['name']}</th><th>Nearby regions</th></tr>""",
             f"""<tr>
                 <td class="pi-dt-label">Education Index</td>           
                 <td class="pi-dt-number">{info['edu_idx']}</td>
@@ -308,8 +308,14 @@ class DataDemography:
         """ Nearby communes """
 
         nearby_ids = []
+        nearby_frags = []
         for row in nearby_info:
             nearby_ids.append(row['commune_id'])
+            nearby_frags.append(f"<span>{row['name']}</span>")
+
+        nearby_note_html = f"""<div class="pi-data-table-note">
+        * Comuni limitrofi: {', '.join(nearby_frags)}
+        </div>"""
 
         return {
             "result": "success",
@@ -318,5 +324,5 @@ class DataDemography:
             "nearby": nearby_ids,
             "bbox": self.polygon_to_bounds(nearby_info[0]['joint_bbox']),
             "title": address,
-            "html": table_combined+table_edu+table_dwell+table_homeless+table_camp+table_inst
+            "html": table_combined+table_edu+table_dwell+table_homeless+table_camp+table_inst+nearby_note_html
         }
