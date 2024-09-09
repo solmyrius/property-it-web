@@ -1,4 +1,6 @@
+var selectedDemoSection = 'combined';
 var hoveredStateId = null;
+var selectedFeatures = [];
 
 const demoLayers = {
     "education": {
@@ -27,6 +29,9 @@ const palette = ["#ff0000", "#ff4500", "#ff8c00", "#ffd700", "#ffff00", "#ccff00
 
 function PIActivateDemoSection(section){
 
+    selectedDemoSection = section;
+    PIActivateDemographyTable();
+
     jQuery(".pi-dc").removeClass('pi-dc-active');
     jQuery(`[data-demography=${section}]`).addClass('pi-dc-active');
 
@@ -41,7 +46,7 @@ function PIActivateDemoSection(section){
             "step",
             ["to-number", ["get", demoLayers[section]["index"]]]
         ]
-        for (i=0; i<8; i++){
+        for (let i=0; i<8; i++){
             colorRule.push(colors[i]);
             if (i<7){
                 colorRule.push(demoLayers[section]["percentiles"][i])
@@ -50,18 +55,17 @@ function PIActivateDemoSection(section){
 
         let fillColor = [
             'case',
-            ['boolean', ['feature-state', 'hover'], false],
-            '#3bb2d0',
-            [
-                'case',
-                ['boolean', ['feature-state', 'selected'], false],
-                '#000000',
-                colorRule
-            ]
+            ['==', ['feature-state', 'hover'], true], '#3bb2d0',
+            colorRule
         ];
         map.setPaintProperty('commune', 'fill-color', fillColor);
     }
-    console.log(section);
+}
+
+function PIActivateDemographyTable(){
+
+    jQuery('.pi-data-table').hide();
+    jQuery('#pi-demography-'+selectedDemoSection).show();
 }
 
 function PIUpdateSectionMap() {
@@ -73,17 +77,6 @@ function PIUpdateSectionMap() {
     }
 
     const point = [loc.lng, loc.lat]
-    map.once('idle', function (){
-        const screen_point = map.project(point);
-        const screen_features = map.queryRenderedFeatures(
-            screen_point,
-            {
-                layers: ['commune']
-            }
-        );
-
-        PINavigateArea(point, screen_features[0].geometry)
-    })
 
     jQuery.post({
         url: '/api/demography',
@@ -100,6 +93,11 @@ function PIUpdateSectionMap() {
 
 function PIProcessUpdateResponseDemography(data) {
 
+    if (data.bbox !== undefined) {
+        console.log(data.bbox);
+        map.fitBounds(data.bbox, {padding: 40});
+    }
+
     if (data.html !== undefined){
         jQuery("#pi-section-placeholder").html(data.html);
     }else{
@@ -108,6 +106,33 @@ function PIProcessUpdateResponseDemography(data) {
 
     if (data.title !== undefined){
         jQuery("#pi-location-title").text(data.title)
+    }
+
+    PIActivateDemographyTable();
+
+    selectedFeatures.forEach(function(ftId){
+        map.setFeatureState(
+            {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: ftId},
+            {'selected-state': false}
+        );
+    })
+    selectedFeatures = [];
+
+    if (data.selected !== undefined){
+        map.setFeatureState(
+            {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: data.selected},
+            {'selected-state': 'selected'}
+        );
+        selectedFeatures.push(data.selected);
+    }
+    if (data.nearby !== undefined){
+        data.nearby.forEach(function(ftId){
+            map.setFeatureState(
+                {source: 'census-commune', sourceLayer: 'prop_census_commune_map', id: ftId},
+                {'selected-state': 'nearby'}
+            );
+            selectedFeatures.push(ftId);
+        });
     }
 }
 
@@ -132,6 +157,7 @@ map.on('load', () => {
         minzoom: 3,
         source: 'census-commune',
         'source-layer': 'prop_census_commune_map',
+        layout: {},
         paint: {
             'fill-color': [
                 'case',
@@ -145,6 +171,24 @@ map.on('load', () => {
                 0.75,       // Highlight opacity
                 0.5         // Default opacity
             ]
+        }
+    });
+
+    map.addLayer({
+        id: 'commune-contour',
+        type: 'line',
+        minzoom: 3,
+        source: 'census-commune',
+        'source-layer': 'prop_census_commune_map',
+        layout: {},
+        paint: {
+            'line-color': '#08191a',
+            'line-width': [
+                'case',
+                ['==', ['feature-state', 'selected-state'], 'selected'], 3,
+                ['==', ['feature-state', 'selected-state'], 'nearby'], 0.5,
+                0
+            ],
         }
     });
 
@@ -198,8 +242,8 @@ map.on('load', () => {
     });
 
     var popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false
+        // closeButton: false,
+        // closeOnClick: false
     });
 
     map.on('click', 'commune', function(e) {
