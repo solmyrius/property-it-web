@@ -357,45 +357,49 @@ class DataDemography:
             'age_population'
         )
 
-        median_age_change = f"{info['median_age_change']:.1f}"
-        if info['median_age_change'] > 0:
-            median_age_change = '+'+median_age_change
-
-        median_age_change_nearby = f"{nearby_age['weighted']['median_age_change']:.1f}"
-        if nearby_age['weighted']['median_age_change'] > 0:
-            median_age_change_nearby = '+'+median_age_change_nearby
-
-        age_rows = [
-            f"""<tr><th>Parametro di età</th><th>Comune selezionato {info['name']}</th><th>Comuni limitrofi</th></tr>""",
-            f"""<tr>
-                <td class="pi-dt-label">Età mediana</td>           
-                <td class="pi-dt-number">{info['median_age']:.1f} anni</td>
-                <td class="pi-dt-number">{nearby_age['weighted']['median_age']:.1f} anni</td>
-            </tr>""",
-            f"""<tr>
-                <td class="pi-dt-label">Età mediana maschi</td>           
-                <td class="pi-dt-number">{info['median_age_m']:.1f} anni</td>
-                <td class="pi-dt-number">{nearby_age['weighted']['median_age_f']:.1f} anni</td>
-            </tr>""",
-            f"""<tr>
-                <td class="pi-dt-label">Età mediana femmine</td>           
-                <td class="pi-dt-number">{info['median_age_f']:.1f} anni</td>
-                <td class="pi-dt-number">{nearby_age['weighted']['median_age_f']:.1f} anni</td>
-            </tr>""",
-            f"""<tr>
-                <td class="pi-dt-label">Variazione dell'età mediana</td>           
-                <td class="pi-dt-number">{median_age_change} anni</td>
-                <td class="pi-dt-number">{median_age_change_nearby} anni</td>
-            </tr>""",
-            f"""<tr>
-                <td class="pi-dt-label">Variazione della popolazione</td>           
-                <td class="pi-dt-number">{info['age_population_change']} ({info['age_population']})</td>
-                <td class="pi-dt-number">{nearby_age['sum']['age_population_change']} ({nearby_age['total']})</td>
-            </tr>""",
+        chart_data = [
+            {'age': "0-5", 'male': -10, 'female': 10 },
+            {'age': "6-11", 'male': -15, 'female': 15 },
+            {'age': "12-17", 'male': -20, 'female': 20 },
         ]
 
-        div_age = f"""<div id="pi-demography-age" class="pi-ss-pane">
-            <table class="pi-data-table pi-data-table-3">{''.join(age_rows)}</table>
+        dt = DemographyTable()
+        dt.put_header([
+            "Parametro di età", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
+        ])
+        dt.add_row([
+            "Età mediana",
+            f"{info['median_age']:.1f} anni",
+            f"{nearby_age['weighted']['median_age']:.1f} anni"
+        ])
+        dt.add_row([
+            "Età mediana maschi",
+            f"{info['median_age_m']:.1f} anni",
+            f"{nearby_age['weighted']['median_age_f']:.1f} anni"
+        ])
+        dt.add_row([
+            "Età mediana femmine",
+            f"{info['median_age_f']:.1f} anni",
+            f"{nearby_age['weighted']['median_age_f']:.1f} anni"
+        ])
+        dt.add_row([
+            "Variazione dell'età mediana",
+            f"{signed_round(info['median_age_change'], 1)} anni",
+            f"{signed_round(nearby_age['weighted']['median_age_change'], 1)} anni"
+        ])
+        dt.add_row([
+            "Variazione della popolazione",
+            f"{info['age_population_change']} ({info['age_population']})",
+            f"{nearby_age['sum']['age_population_change']} ({nearby_age['total']})"
+        ])
+
+        div_age = f"""
+            <div id="pi-demography-age" class="pi-ss-pane">
+                <div id="pi-demography-chart-age">
+                    <svg width="600" height="500"></svg>
+                    <script id="pi-demography-chart-age-data" type="application/json">{json.dumps(chart_data)}</script>
+                </div>
+                {dt.get_html()}
             </div>"""
 
         """ Aliens """

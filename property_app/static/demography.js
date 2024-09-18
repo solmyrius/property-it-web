@@ -146,7 +146,59 @@ function PIProcessUpdateResponseDemography(data) {
 }
 
 function PIActivateDemographyCharts(){
+    const data = JSON.parse(jQuery('#pi-demography-chart-age-data').text())
 
+    const width = 600, height = 500;
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const svg = d3.select("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+        .domain([d3.min(data, d => d.male), d3.max(data, d => d.female)])
+        .range([0, innerWidth]);
+
+    const yScale = d3.scaleBand()
+        .domain(data.map(d => d.age))
+        .range([0, innerHeight])
+        .padding(0.1);
+
+// Axes
+    const xAxis = d3.axisBottom(xScale).tickFormat(d => Math.abs(d));
+    const yAxis = d3.axisLeft(yScale);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(xAxis);
+
+    svg.append("g").call(yAxis);
+
+// Bars for males
+    svg.selectAll(".male")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "male")
+        .attr("x", d => xScale(d.male))
+        .attr("y", d => yScale(d.age))
+        .attr("width", d => xScale(0) - xScale(d.male))
+        .attr("height", yScale.bandwidth())
+        .attr("fill", "blue");
+
+// Bars for females
+    svg.selectAll(".female")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "female")
+        .attr("x", xScale(0))
+        .attr("y", d => yScale(d.age))
+        .attr("width", d => xScale(d.female) - xScale(0))
+        .attr("height", yScale.bandwidth())
+        .attr("fill", "red");
 }
 
 function PISectionMapClick(e) {
