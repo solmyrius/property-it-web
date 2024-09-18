@@ -27,3 +27,10 @@ def round_kmm(num):
                 return f"{km}km"
             else:
                 return f"{km}.{hm}km"
+
+
+def signed_round(num, precision):
+    text = f"{round(num, precision)}"
+    if num > 0:
+        text = '+'+text
+    return text

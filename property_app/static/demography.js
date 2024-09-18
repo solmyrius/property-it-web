@@ -23,6 +23,14 @@ const demoLayers = {
         "index": "camp_idx",
         "percentiles":[0.14625, 0.34, 0.57, 1.005, 1.6624999999999999, 2.685, 4.42875]
     },
+    "age": {
+        "index": "median_age",
+        "percentiles":[46.625, 48.06617647058823, 49.14891304347826, 50.194148936170215, 51.333333333333336, 52.725, 54.61942959001783]
+    },
+    "alien": {
+        "index": "alien_idx",
+        "percentiles":[1.7812890607969236, 2.8751505427683988, 3.9696094118737673, 5.1372273047149895, 6.406293323191954, 7.994718479718761, 10.306897524940792]
+    },
 }
 
 const palette = ["#ff0000", "#ff4500", "#ff8c00", "#ffd700", "#ffff00", "#ccff00", "#7fff00", "#00ff00"];
@@ -64,7 +72,7 @@ function PIActivateDemoSection(section){
 
 function PIActivateDemographyTable(){
 
-    jQuery('.pi-data-table').hide();
+    jQuery('.pi-ss-pane').hide();
     jQuery('#pi-demography-'+selectedDemoSection).show();
 }
 
@@ -108,6 +116,7 @@ function PIProcessUpdateResponseDemography(data) {
         jQuery("#pi-location-title").text(data.title)
     }
 
+    PIActivateDemographyCharts();
     PIActivateDemographyTable();
 
     selectedFeatures.forEach(function(ftId){
@@ -134,6 +143,10 @@ function PIProcessUpdateResponseDemography(data) {
             selectedFeatures.push(ftId);
         });
     }
+}
+
+function PIActivateDemographyCharts(){
+
 }
 
 function PISectionMapClick(e) {
