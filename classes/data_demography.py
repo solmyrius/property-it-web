@@ -1,5 +1,6 @@
 import json
 import re
+import pandas as pd
 
 from classes.helper import round_two_digits, signed_round
 from classes.gis_helper import GisHelper
@@ -204,6 +205,39 @@ class DataDemography:
                     aliens[row['country_code']]['nearby'] += row['population_t']
         return dict(sorted(aliens.items(), key=lambda item: item[1]['commune'], reverse=True))
 
+    def query_pyramid(self, commune_id):
+        last_year = 2024
+        sql = f"SELECT * FROM prop_population_age_raw WHERE commune_id=%s AND year=%s AND age!=999 ORDER BY age"
+        cur = self.conn.cursor()
+        cur.execute(sql, (commune_id, last_year))
+        rows = cur.fetchall()
+
+        df = pd.DataFrame(rows)
+        grain = 5  # Define the size of each group
+
+        result = df.groupby(df['age'] // grain).agg(
+            age=('age', 'mean'),  # Average age for the group
+            population_m=('population_m', 'sum'),  # Sum of male population for the group
+            population_f=('population_f', 'sum')  # Sum of female population for the group
+        ).reset_index(drop=True)
+        result = result.iloc[::-1].reset_index(drop=True)
+
+        return result
+
+    def query_age_change(self, commune_id):
+        sql = f"SELECT year, median_age, population FROM prop_population_age_year WHERE commune_id=%s ORDER BY year"
+        cur = self.conn.cursor()
+        cur.execute(sql, (commune_id, ))
+        rows = cur.fetchall()
+        return rows
+
+    def query_alien_change(self, commune_id):
+        sql = f"SELECT year, alien_idx FROM prop_population_alien_year WHERE commune_id=%s ORDER BY year"
+        cur = self.conn.cursor()
+        cur.execute(sql, (commune_id, ))
+        rows = cur.fetchall()
+        return rows
+
     def get_section_data(self, point):
 
         gis = GisHelper()
@@ -357,11 +391,14 @@ class DataDemography:
             'age_population'
         )
 
-        chart_data = [
-            {'age': "0-5", 'male': -10, 'female': 10 },
-            {'age': "6-11", 'male': -15, 'female': 15 },
-            {'age': "12-17", 'male': -20, 'female': 20 },
-        ]
+        pyramid = self.query_pyramid(commune_id)
+        chart_pyramid_data = []
+        for idx, row in pyramid.iterrows():
+            chart_pyramid_data.append(
+                {'age': row['age'], 'male': -row['population_m'], 'female': row['population_f']}
+            )
+
+        chart_age_change_data = self.query_age_change(commune_id)
 
         dt = DemographyTable()
         dt.put_header([
@@ -395,11 +432,15 @@ class DataDemography:
 
         div_age = f"""
             <div id="pi-demography-age" class="pi-ss-pane">
-                <div id="pi-demography-chart-age">
-                    <svg width="600" height="500"></svg>
-                    <script id="pi-demography-chart-age-data" type="application/json">{json.dumps(chart_data)}</script>
+                <div class="pi-chart">
+                    <svg id="pi-chart-age-pyramid"></svg>
+                    <script id="pi-chart-age-pyramid-data" type="application/json">{json.dumps(chart_pyramid_data)}</script>
                 </div>
                 {dt.get_html()}
+                <div class="pi-chart">
+                    <svg id="pi-chart-age-change"></svg>
+                    <script id="pi-chart-age-change-data" type="application/json">{json.dumps(chart_age_change_data)}</script>
+                </div>
             </div>"""
 
         """ Aliens """
@@ -410,29 +451,35 @@ class DataDemography:
         )
 
         countries = self.query_aliens(commune_id, nearby_ids)
+        chart_alien_change_data = self.query_alien_change(commune_id)
 
-        dt = DemographyTable()
-        dt.put_header([
+        dt1 = DemographyTable()
+        dt1.put_header([
             "Parametro Forestieri", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
         ])
-        dt.add_row([
+        dt1.add_row([
             "Indice degli forestieri",
             f"{info['alien_idx']:.1f}",
             f"{nearby_alien['weighted']['alien_idx']:.1f}"
         ])
-        dt.add_row([
+        dt1.add_row([
             f"Variazione Indice degli forestieri ({info['alien_base_year']}-{info['alien_last_year']})",
             signed_round(info['alien_idx_change'], 1),
             signed_round(nearby_alien['weighted']['alien_idx_change'], 1)
         ])
-        dt.add_row([
+        dt1.add_row([
             f"Numero di residenti nati fuori dall'UE",
             info['alien_population_noneu'],
             nearby_alien['sum']['alien_population_noneu']
         ])
 
+        dt2 = DemographyTable()
+        dt2.put_header([
+            "Paese di origine", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
+        ])
+
         for country in countries.values():
-            dt.add_row([
+            dt2.add_row([
                 country['info']['country_name'],
                 country['commune'],
                 country['nearby']
@@ -440,7 +487,12 @@ class DataDemography:
 
         div_alien = f"""<div id="pi-demography-alien" class="pi-ss-pane">
             <div>I dati demografici sugli stranieri sono riferiti al {info['alien_last_year']}</div>
-            {dt.get_html()}
+            {dt1.get_html()}
+            <div class="pi-chart">
+                <svg id="pi-chart-alien-change"></svg>
+                <script id="pi-chart-alien-change-data" type="application/json">{json.dumps(chart_alien_change_data)}</script>
+            </div>
+            {dt2.get_html()}
             </div>"""
 
         """ Combined """

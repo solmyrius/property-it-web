@@ -146,16 +146,19 @@ function PIProcessUpdateResponseDemography(data) {
 }
 
 function PIActivateDemographyCharts(){
-    const data = JSON.parse(jQuery('#pi-demography-chart-age-data').text())
+
+    // Population pyramid
+
+    const data = JSON.parse(jQuery('#pi-chart-age-pyramid-data').text())
 
     const width = 600, height = 500;
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
-    const svg = d3.select("svg")
-        .attr("width", width)
-        .attr("height", height)
+    const svg = d3.select("#pi-chart-age-pyramid")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -168,7 +171,7 @@ function PIActivateDemographyCharts(){
         .range([0, innerHeight])
         .padding(0.1);
 
-// Axes
+        // Axes
     const xAxis = d3.axisBottom(xScale).tickFormat(d => Math.abs(d));
     const yAxis = d3.axisLeft(yScale);
 
@@ -178,7 +181,7 @@ function PIActivateDemographyCharts(){
 
     svg.append("g").call(yAxis);
 
-// Bars for males
+        // Bars for males
     svg.selectAll(".male")
         .data(data)
         .enter().append("rect")
@@ -189,7 +192,7 @@ function PIActivateDemographyCharts(){
         .attr("height", yScale.bandwidth())
         .attr("fill", "blue");
 
-// Bars for females
+        // Bars for females
     svg.selectAll(".female")
         .data(data)
         .enter().append("rect")
@@ -199,6 +202,108 @@ function PIActivateDemographyCharts(){
         .attr("width", d => xScale(d.female) - xScale(0))
         .attr("height", yScale.bandwidth())
         .attr("fill", "red");
+
+    // Population changes
+    PIGraphPopulationChange();
+
+    // Alien changes
+    PIGraphAlienChange();
+}
+
+function PIGraphPopulationChange() {
+
+    const data = JSON.parse(jQuery('#pi-chart-age-change-data').text())
+
+    const margin = {top: 20, right: 30, bottom: 40, left: 50},
+        width = 600 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    const svg = d3.select("#pi-chart-age-change")
+        .attr("viewBox", `0 0 600 500`)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.year))
+        .range([ 0, width ]);
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+    const y = d3.scaleLinear()
+        .domain([d3.min(data, d => d['median_age']), d3.max(data, d => d['median_age'])])
+        .range([ height, 0 ]);
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+            .x(function(d) { return x(d.year) })
+            .y(function(d) { return y(d['median_age']) })
+        );
+
+    data.forEach(function(d) {
+        svg.append("circle")
+            .attr("cx", x(d.year))
+            .attr("cy", y(d['median_age']))
+            .attr("r", 5)
+            .attr("fill", "red");
+    });
+}
+
+function PIGraphAlienChange() {
+
+    const data = JSON.parse(jQuery('#pi-chart-alien-change-data').text())
+
+    const margin = {top: 20, right: 30, bottom: 40, left: 50},
+        width = 600 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    const svg = d3.select("#pi-chart-alien-change")
+        .attr("viewBox", `0 0 600 500`)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.year))
+        .range([ 0, width ]);
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+    const y = d3.scaleLinear()
+        .domain([d3.min(data, d => d['alien_idx']), d3.max(data, d => d['alien_idx'])])
+        .range([ height, 0 ]);
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+            .x(function(d) { return x(d.year) })
+            .y(function(d) { return y(d['alien_idx']) })
+        );
+
+    data.forEach(function(d) {
+        svg.append("circle")
+            .attr("cx", x(d.year))
+            .attr("cy", y(d['alien_idx']))
+            .attr("r", 5)
+            .attr("fill", "red");
+    });
 }
 
 function PISectionMapClick(e) {

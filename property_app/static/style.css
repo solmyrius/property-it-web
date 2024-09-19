@@ -149,7 +149,15 @@ h1 {
     font-size: 12px;
     color: #444;
 }
-
+.pi-chart {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.pi-chart svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 .subnav-link-active {
     border-bottom: 2px solid #007bff;
     border-radius: unset !important;
@@ -842,7 +850,7 @@ button.map-dsks {
 
 .site-footer {
     height: 130px; /* Adjusted footer height */
-    background: linear-gradient(to right, rgba(37, 126, 236, 0.8), rgba(2, 24, 61, 0.8));
+    background: linear-gradient(to right, rgba(37, 236, 96, 0.8), rgba(7, 61, 2, 0.8));
     color: #333; /* Dark text color for contrast */
     text-align: center; /* Align text to the left */
     line-height: 20px; /* Adjust line height for better text alignment */
