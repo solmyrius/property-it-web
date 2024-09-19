@@ -79,8 +79,8 @@ h1 {
     padding: 7px;
     margin: 4px 6px;
     text-align: center;
-    background-color: #c3dfff;
-    border: 1px solid #1485ff;
+    background-color: #95d2a4;
+    border: 1px solid #3e8445;
     cursor: pointer;
 }
 .pi-dc-active{
@@ -88,13 +88,13 @@ h1 {
     border: 1px solid #0056b3;
 }
 .pi-dc:hover a{
-    color: #2b84e8;
+    color: #194d1e;
 }
 .pi-dc a{
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
-    color: #0056b3;
+    color: #3e8445;
     white-space: nowrap;
 }
 .pi-dc a:hover {
