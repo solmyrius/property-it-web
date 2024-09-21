@@ -1,4 +1,4 @@
-function PIUpdateSectionMap(){
+function PIUpdateSectionMap() {
 
     let loc = PIGetSelectedLocation();
 
@@ -22,9 +22,25 @@ function PIUpdateSectionMap(){
     });
 }
 
-function PIProcessUpdateResponseScuole(data){
+function PIProcessUpdateResponseScuole(data) {
 
     console.log(data);
+}
+
+function PIScuoleClick(e) {
+
+    let props = e.features[0].properties;
+
+    let name = props.name
+    if (name === undefined) {
+        name = 'Scuola';
+    }
+
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(name)
+        .addTo(map);
+
 }
 
 function PISectionMapClick(e) {
@@ -49,7 +65,7 @@ map.on('load', () => {
     });
 
     map.addLayer({
-        id: 'scoule-point',
+        id: 'scoule-marker',
         type: 'circle',
         source: 'scuole',
         'source-layer': 'prop_schools_geo',
@@ -59,12 +75,21 @@ map.on('load', () => {
                 'match',
                 ['get', 'is_state'],
                 'state', '#4682B4',
-                'crimson' // Default color
+                'private', '#7CFC00',
+                'white' // Default color
             ],
             'circle-radius': 6,
             'circle-stroke-width': 1,
             'circle-stroke-color': '#000'
         }
+    });
+
+    map.on('click', 'scoule-marker', PIScuoleClick);
+    map.on('mouseenter', 'scoule-marker', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'scoule-marker', (e) => {
+        map.getCanvas().style.cursor = '';
     });
 
     PIUpdateSectionMap();
