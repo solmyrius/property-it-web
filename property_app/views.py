@@ -30,6 +30,12 @@ def ui_section(request, section):
             'title': 'Servizi locali vicino a {placeholder}',
             'anchor': 'Amenities',
             'href': '/amenities'
+        },
+        {
+            'section': 'scuole',
+            'title': 'Scuole vicino a {placeholder}',
+            'anchor': 'Scuole',
+            'href': '/scuole'
         }
     ]
 
@@ -57,6 +63,9 @@ def ui_section(request, section):
     if section == 'demography':
         from classes.data_demography import DataDemography
         data_class = DataDemography()
+    if section == 'scuole':
+        from classes.data_schools import DataSchools
+        data_class = DataSchools
 
     location_placeholder = "all'indirizzo selezionato in Italia"
     context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
