@@ -4,6 +4,7 @@ import pandas as pd
 
 from classes.helper import round_two_digits, signed_round
 from classes.gis_helper import GisHelper
+from classes.datatable import DataTable
 from classes.pgconn import pdb_conn
 
 """
@@ -24,34 +25,6 @@ camp dwellers
 no sense since only part of communes have such
 [0.14625, 0.34, 0.57, 1.005, 1.6624999999999999, 2.685, 4.42875] 
 """
-
-
-class DemographyTable:
-    def __init__(self):
-        self.columns = 3
-        self.row_header = []
-        self.rows_body = []
-
-    def put_header(self, row):
-        self.row_header = row
-
-    def add_row(self, row, style=None):
-
-        cells = []
-        for idx, item in enumerate(row):
-            cls = "pi-dt-number"
-            if idx == 0:
-                cls = "pi-dt-label"
-            if style is not None and len(style) > idx:
-                cls = style[idx]
-            cells.append(f'<td class="{cls}">{item}</td>')
-
-        self.rows_body.append(f"<tr>{''.join(cells)}</tr>")
-
-    def get_html(self):
-        header = f"""<tr><th>{'</th><th>'.join(self.row_header)}</th></tr>"""
-
-        return f"""<table class="pi-data-table pi-data-table-{self.columns}">{header}{''.join(self.rows_body)}</table>"""
 
 
 class DataDemography:
@@ -400,7 +373,7 @@ class DataDemography:
 
         chart_age_change_data = self.query_age_change(commune_id)
 
-        dt = DemographyTable()
+        dt = DataTable()
         dt.put_header([
             "Parametro di età", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
         ])
@@ -453,7 +426,7 @@ class DataDemography:
         countries = self.query_aliens(commune_id, nearby_ids)
         chart_alien_change_data = self.query_alien_change(commune_id)
 
-        dt1 = DemographyTable()
+        dt1 = DataTable()
         dt1.put_header([
             "Parametro Forestieri", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
         ])
@@ -473,7 +446,7 @@ class DataDemography:
             nearby_alien['sum']['alien_population_noneu']
         ])
 
-        dt2 = DemographyTable()
+        dt2 = DataTable()
         dt2.put_header([
             "Paese di origine", f"Comune selezionato {info['name']}", "Comuni limitrofi<sup>*</sup>"
         ])
