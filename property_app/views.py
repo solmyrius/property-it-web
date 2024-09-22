@@ -91,6 +91,9 @@ def api_section(request, section):
         if section == 'demography':
             from classes.data_demography import DataDemography
             data_class = DataDemography()
+        if section == 'scuole':
+            from classes.data_schools import DataSchools
+            data_class = DataSchools()
 
         if data_class is not None:
             return JsonResponse(data_class.get_section_data(data['point']))

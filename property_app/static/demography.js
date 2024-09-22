@@ -102,7 +102,6 @@ function PIUpdateSectionMap() {
 function PIProcessUpdateResponseDemography(data) {
 
     if (data.bbox !== undefined) {
-        console.log(data.bbox);
         map.fitBounds(data.bbox, {padding: 40});
     }
 

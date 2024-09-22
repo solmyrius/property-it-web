@@ -6,6 +6,7 @@ class DataTable:
 
     def put_header(self, row):
         self.row_header = row
+        self.columns = len(row)
 
     def add_row(self, row, style=None):
 

@@ -7,7 +7,7 @@ function PIUpdateSectionMap() {
         return;
     }
 
-    PINavigateCircles([loc.lng, loc.lat], [500]);
+    PINavigateCircles([loc.lng, loc.lat], [3000]);
 
     jQuery.post({
         url: '/api/scuole',
@@ -24,7 +24,15 @@ function PIUpdateSectionMap() {
 
 function PIProcessUpdateResponseScuole(data) {
 
-    console.log(data);
+    if (data.html !== undefined){
+        jQuery("#pi-section-placeholder").html(data.html);
+    }else{
+        jQuery("#pi-section-placeholder").html('');
+    }
+
+    if (data.title !== undefined){
+        jQuery("#pi-location-title").text(data.title)
+    }
 }
 
 function PIScuoleClick(e) {
