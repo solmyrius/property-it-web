@@ -5,6 +5,13 @@ body, html {
     overflow: hidden;
     font-family: 'Arial', sans-serif;
 }
+#pi-logo {
+    display: block;
+}
+#pi-logo img{
+    width: 74px;
+    height: 74px;
+}
 h1 {
     font-size: 30px;
 }
