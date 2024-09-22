@@ -1,6 +1,6 @@
 import json
 
-from classes.helper import round_kmm, round_two_digits
+from classes.helper_view import round_kmm, round_two_digits
 from classes.gis_helper import GisHelper
 from classes.pgconn import pdb_conn
 
