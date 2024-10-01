@@ -52,7 +52,7 @@ function PIScuoleClick(e) {
 }
 
 function PISectionMapClick(e) {
-    if (map.queryRenderedFeatures(e.point).filter(feature => feature.source === 'amenities').length === 0) {
+    if (map.queryRenderedFeatures(e.point).filter(feature => feature.source === 'scuole').length === 0) {
         PIMapSelectPoint([e.lngLat.lng, e.lngLat.lat]);
     }
 }

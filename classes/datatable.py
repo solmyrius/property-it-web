@@ -1,7 +1,7 @@
 class DataTable:
     def __init__(self):
-        self.columns = 3
-        self.row_header = []
+        self.columns = None
+        self.row_header = None
         self.rows_body = []
 
     def put_header(self, row):
@@ -9,6 +9,9 @@ class DataTable:
         self.columns = len(row)
 
     def add_row(self, row, style=None):
+
+        if self.columns is None:
+            self.columns = len(row)
 
         cells = []
         for idx, item in enumerate(row):
@@ -22,6 +25,9 @@ class DataTable:
         self.rows_body.append(f"<tr>{''.join(cells)}</tr>")
 
     def get_html(self):
-        header = f"""<tr><th>{'</th><th>'.join(self.row_header)}</th></tr>"""
+        if self.row_header is not None:
+            header = f"""<tr><th>{'</th><th>'.join(self.row_header)}</th></tr>"""
+        else:
+            header = ""
 
         return f"""<table class="pi-data-table pi-data-table-{self.columns}">{header}{''.join(self.rows_body)}</table>"""

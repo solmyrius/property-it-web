@@ -8,16 +8,13 @@ def home(request):
     return HttpResponse('Hello, welcome to my Django page!')
 
 
-def ui_section(request, section):
-
-    map_template = f"section_{section}.html"
-    map_script_url = f"/static/{section}.js"
-
-    section_rules = [
+def section_rules():
+    return [
         {
-            'section': 'overview',
-            'anchor': 'Overview',
-            'href': '/overview'
+            'section': 'sintesi',
+            'title': 'Sintesi vicino a {placeholder}',
+            'anchor': 'Sintesi',
+            'href': '/sintesi'
         },
         {
             'section': 'demography',
@@ -39,6 +36,13 @@ def ui_section(request, section):
         }
     ]
 
+
+def ui_section(request, section):
+    map_template = f"section_{section}.html"
+    map_script_url = f"/static/{section}.js"
+
+    sections = section_rules()
+
     # Setting the active menu item
     active_menu = section
 
@@ -46,16 +50,18 @@ def ui_section(request, section):
         'sub_template': 'page_map.html',
         'map_template': map_template,
         'map_script_url': map_script_url,
-        'top_menu': section_rules,
+        'top_menu': sections,
         'active_menu': active_menu,
         'section': section
     }
 
     section_info = {}
-    for ss in section_rules:
+    for ss in sections:
         if ss['section'] == section:
             section_info = ss
 
+    if section == 'sintesi':
+        pass
     if section == 'amenities':
         from classes.data_amenity import DataAmenity
         data_class = DataAmenity()
@@ -65,11 +71,12 @@ def ui_section(request, section):
         data_class = DataDemography()
     if section == 'scuole':
         from classes.data_schools import DataSchools
-        data_class = DataSchools
+        data_class = DataSchools()
 
     location_placeholder = "all'indirizzo selezionato in Italia"
     context['head_title'] = section_info['title'].replace('{placeholder}', location_placeholder)
-    context['page_title'] = section_info['title'].replace('{placeholder}', '<span id="pi-location-title">'+location_placeholder+'</span>')
+    context['page_title'] = section_info['title'].replace('{placeholder}',
+                                                          '<span id="pi-location-title">' + location_placeholder + '</span>')
     context['section_content'] = '<div id="pi-section-placeholder"></div>'
 
     return render(request, 'page.html', context)
@@ -85,6 +92,9 @@ def api_section(request, section):
         }
         """
         data_class = None
+        if section == 'sintesi':
+            from classes.data_overview import DataOverview
+            data_class = DataOverview()
         if section == 'amenities':
             from classes.data_amenity import DataAmenity
             data_class = DataAmenity()
@@ -101,3 +111,24 @@ def api_section(request, section):
     resp = HttpResponse("Wrong request")
     resp.status_code = 400
     return resp
+
+
+def ui_school(request, school_id):
+
+    from classes.data_schools import DataSchools
+    data_class = DataSchools()
+    school_info = data_class.get_school_data(school_id)
+
+    context = {
+        'sub_template': 'page_map.html',
+        'map_template': 'scuola.html',
+        'map_script_url': 'scuola.js',
+        'top_menu': section_rules(),
+        'active_menu': 'scuole',
+        'section': '',
+        'head_title': f"Informazioni dettagliate sulla scuola selezionata: {school_info['school']['denominazionescuola']}",
+        'page_title': f"""Informazioni dettagliate sulla scuola selezionata: <span id="pi-location-title">{school_info['school']['denominazionescuola']}</span>""",
+        'section_content': school_info["html"]
+    }
+
+    return render(request, 'page.html', context)
