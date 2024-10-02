@@ -42,6 +42,10 @@ h1 {
     height: calc(100vh - 140px);
     box-sizing: border-box;
 }
+#pi-map-datapane h1{
+    font-size: 22px;
+    margin: 20px 20px;
+}
 .pi-section-controls{
     padding: 20px 20px 0 20px;
 }

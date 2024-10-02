@@ -122,7 +122,7 @@ def ui_school(request, school_id):
     context = {
         'sub_template': 'page_map.html',
         'map_template': 'scuola.html',
-        'map_script_url': 'scuola.js',
+        'map_script_url': '/static/scuola.js',
         'top_menu': section_rules(),
         'active_menu': 'scuole',
         'section': '',

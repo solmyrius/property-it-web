@@ -87,7 +87,8 @@ class DataSchools:
         }
 
     def get_school_data(self, school_id):
-        sql = f"""SELECT * FROM prop_schools
+        sql = f"""SELECT s.*, ST_X(sg.point) as lng, ST_Y(sg.point) as lat FROM prop_schools as s
+            LEFT JOIN prop_schools_geo as sg ON sg.school_id = s.codicescuola       
             WHERE codicescuola = %(school_id)s"""
 
         conn = pdb_conn()
@@ -145,7 +146,16 @@ class DataSchools:
             school_web
         ])
 
+        school_location = {
+            "center": {
+                "lng": school["lng"],
+                "lat": school["lat"]
+            },
+            "zoom": 12
+        }
+
         div_school = f"""<div id="pi-school-item">
+            <script id="pi-section-map-location" type="application/json">{json.dumps(school_location)}</script>
             {dt.get_html()}
             </div>"""
 

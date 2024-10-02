@@ -10,12 +10,26 @@
     </div>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2VyZ2VuYW1vIiwiYSI6ImNsenF0OTd3azFwNWwyanF1NXpzZmlmMjgifQ.yp9f9bDS41v24IN347HaAw';
+
+        let sectionMapLocation = {'lng': 9.19828, 'lat': 45.46193};
+        let sectionMapZoom = 9;
+        let sectionMapLocationEmbed = document.getElementById("pi-section-map-location");
+        if(sectionMapLocationEmbed !== null){
+            let sectionMapData = JSON.parse(sectionMapLocationEmbed.innerText);
+            if (sectionMapData.zoom !== undefined){
+                sectionMapZoom = sectionMapData.zoom
+            }
+            if (sectionMapData.center !== undefined){
+                sectionMapLocation = sectionMapData.center
+            }
+        }
+
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/outdoors-v11',
             // style: {version: 8,sources: {},layers: []},
-            center: [9.19828, 45.46193],
-            zoom: 9
+            center: sectionMapLocation,
+            zoom: sectionMapZoom
         });
     </script>
     <script src="/static/map.js"></script>
