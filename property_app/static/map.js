@@ -205,6 +205,34 @@ function PIActivateCircles(center, radii) {
     }
 }
 
+let sectionMapLocation = {'lng': 9.19828, 'lat': 45.46193};
+let sectionMapZoom = 9;
+let sectionMapLocationEmbed = document.getElementById("pi-section-map-location");
+if(sectionMapLocationEmbed !== null){
+    let sectionMapData = JSON.parse(sectionMapLocationEmbed.innerText);
+    if (sectionMapData.zoom !== undefined){
+        sectionMapZoom = sectionMapData.zoom
+    }
+    if (sectionMapData.center !== undefined){
+        sectionMapLocation = sectionMapData.center
+    }
+}
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/outdoors-v11',
+    // style: {version: 8,sources: {},layers: []},
+    center: sectionMapLocation,
+    zoom: sectionMapZoom
+});
+
+const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        countries: 'IT'
+    });
+map.addControl(geocoder, 'top-left');
+
 map.on('load', () => {
     map.on('click', PISectionMapClick);  // Should process click on blank map only
 })
