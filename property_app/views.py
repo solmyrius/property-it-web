@@ -33,6 +33,12 @@ def section_rules():
             'title': 'Scuole vicino a {placeholder}',
             'anchor': 'Scuole',
             'href': '/scuole'
+        },
+        {
+            'section': 'price',
+            'title': 'Property prices in the region of {placeholder}',
+            'anchor': 'Property prices',
+            'href': '/price'
         }
     ]
 

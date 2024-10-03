@@ -8,5 +8,6 @@ urlpatterns = [
     path('amenities', views.ui_section, name="ui_amenities", kwargs={'section': 'amenities'}),
     path('demography', views.ui_section, name="ui_demography", kwargs={'section': 'demography'}),
     path('scuole', views.ui_section, name="ui_scuole", kwargs={'section': 'scuole'}),
-    path('scuola/<str:school_id>', views.ui_school, name="ui_school")
+    path('scuola/<str:school_id>', views.ui_school, name="ui_school"),
+    path('price', views.ui_section, name="ui_price", kwargs={'section': 'price'}),
 ]
