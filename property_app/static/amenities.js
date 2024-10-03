@@ -182,7 +182,7 @@ map.on('load', () => {
     map.addLayer({
         id: 'amenity-marker',
         type: 'symbol',
-        minzoom: 8,
+        minzoom: 6,
         source: 'amenities',
         'source-layer': 'prop_amenities',
         layout: {
