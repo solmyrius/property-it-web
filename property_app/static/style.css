@@ -30,6 +30,28 @@ h1 {
     right: 0;
     z-index: 1000;
 }
+#pi-menu a {
+    text-decoration: none;
+    font-size: 1em;
+    color: #000000;
+    margin: 0 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 10px;
+    transition: background-color 0.3s, color 0.3s;
+    border-bottom: 3px solid #ffffff;
+}
+
+#pi-menu a:hover {
+    border-bottom-color: rgb(37, 126, 236);
+}
+.pi-menu-active {
+    background: rgba(37, 126, 236, 0.8);
+    color: #ffffff !important; /* Text color */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 10px; /* Adjust padding as needed */
+    text-decoration: none !important; /* Remove underline */
+}
 #pi-map-main{
     display: flex;
     flex-direction: row;
@@ -361,35 +383,6 @@ button.map-dsks {
     border-left: 1px solid #eaeaea; /* Light grey left border */
     border-right: 1px solid #eaeaea; /* Light grey right border */
 }
-
-.navigation a {
-    max-width: 1425px;
-    text-decoration: none !important;
-    font-size: 1em; /* Using em makes it scalable */
-    color: #000000;
-    margin: 0 16px; /* Spacing between navigation items */
-    font-weight: bold; /* Set the font-weight to bold */
-    text-align: center;
-    padding: 5px 10px; /* Adjust padding as needed */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
-}
-
-/* Hover effect */
-.navigation a:hover {
-    background-color: rgba(37, 126, 236, 0.8); /* Blue background on hover */
-    color: #ffffff; /* White text on hover */
-    border-radius: 20px; /* Rounded corners on hover */
-}
-
-
-.demographics-link {
-    background: rgba(37, 126, 236, 0.8);
-    color: #ffffff !important; /* Text color */
-    border-radius: 20px; /* Rounded corners */
-    padding: 5px 10px; /* Adjust padding as needed */
-    text-decoration: none !important; /* Remove underline */
-}
-
 
 .subnav {
     position: fixed;
@@ -1800,7 +1793,7 @@ a:hover {
         overflow-y: hidden; /* Prevent vertical scrolling */
     }
 
-    .navigation a {
+    #pi-menu a {
         margin: 0 10px; /* Spacing between navigation items */
     }
 
@@ -1934,7 +1927,7 @@ a:hover {
     }
 
 
-    .navigation a {
+    #pi-menu a {
         font-size: 0.9em; /* Scalable font size */
         margin: 0 9px; /* Spacing between navigation items */
     }
@@ -2040,11 +2033,6 @@ a:hover {
         height: auto; /* Maintain aspect ratio */
     }
 
-    /* Style the "Demographics" link */
-    .navigation a[href="#demographics"] {
-        padding: 5px 5px; /* Adjust padding as needed */
-
-    }
     .subnav {
         position: fixed; /* Keep it fixed like the header and nav */
         top: 120px;
@@ -2601,7 +2589,7 @@ a:hover {
 
 
 
-    .demographics-link {
+    .pi-menu-active {
         background: rgba(37, 126, 236, 0.8);
         font-weight: bold;
     }

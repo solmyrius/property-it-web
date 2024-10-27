@@ -110,6 +110,9 @@ def api_section(request, section):
         if section == 'scuole':
             from classes.data_schools import DataSchools
             data_class = DataSchools()
+        if section == 'omi':
+            from classes.data_omi import DataOmi
+            data_class = DataOmi()
 
         if data_class is not None:
             return JsonResponse(data_class.get_section_data(data['point']))

@@ -75,10 +75,10 @@
             <div class="arrow-left hidden">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <div id="owl-demo" class="carousel navigation slider1">
+            <div id="pi-menu">
                 {% for item in top_menu %}
                 <a href="{{item.href}}"
-                   class="{% if item.section == active_menu %}demographics-link{% endif %}">{{item.anchor}}</a>
+                   class="{% if item.section == active_menu %}pi-menu-active{% endif %}">{{item.anchor}}</a>
                 {% endfor %}
             </div>
             <div class="arrow-right">
