@@ -39,6 +39,12 @@ def section_rules():
             'title': 'Property prices in the region of {placeholder}',
             'anchor': 'Property prices',
             'href': '/price'
+        },
+        {
+            'section': 'ambiente',
+            'title': 'I fattori ambientali nella regione {placeholder}',
+            'anchor': 'Ambiente',
+            'href': '/ambiente'
         }
     ]
 
@@ -123,7 +129,6 @@ def api_section(request, section):
 
 
 def ui_school(request, school_id):
-
     from classes.data_schools import DataSchools
     data_class = DataSchools()
     school_info = data_class.get_school_data(school_id)

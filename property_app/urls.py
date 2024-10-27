@@ -10,4 +10,5 @@ urlpatterns = [
     path('scuole', views.ui_section, name="ui_scuole", kwargs={'section': 'scuole'}),
     path('scuola/<str:school_id>', views.ui_school, name="ui_school"),
     path('price', views.ui_section, name="ui_price", kwargs={'section': 'price'}),
+    path('ambiente', views.ui_section, name="ui_ambiente", kwargs={'section': 'ambiente'})
 ]
