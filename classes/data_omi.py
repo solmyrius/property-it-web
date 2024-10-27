@@ -110,7 +110,7 @@ class DataOmi:
             # Collecting chart prices
             tip_cod = int(row['cod_tip'])
 
-            if tip_cod in prop_types:
+            if tip_cod in prop_types and row['stato'] == 'NORMALE':
                 if tip_cod not in chart_price_types:
                     chart_price_types[tip_cod] = {
                         'description': row['descr_tipologia'],
@@ -132,7 +132,7 @@ class DataOmi:
         chart_data = sorted(chart_price_types.items(), key=lambda item: (-len(item[1]['prices']), prop_types.index(item[0])))
         chart_price = []
 
-        if len(chart_data)>0:
+        if len(chart_data) > 0:
             timeseries_selected = chart_data[0][1]
             chart_price = sorted(timeseries_selected['prices'], key=lambda x: x['time_sort'])
             chart_label = timeseries_selected['description']

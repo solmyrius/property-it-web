@@ -179,7 +179,7 @@ function PIActivatePriceCharts() {
 
     if (chart_embed.show_rent) {
         const yRent = d3.scaleLinear()
-            .domain([d3.min(data, d => d.price_rent) - 10, d3.max(data, d => d.price_rent) + 10])
+            .domain([d3.min(data, d => d.price_rent) - 2, d3.max(data, d => d.price_rent) + 2])
             .nice()
             .range([innerHeight, 0]);
 
